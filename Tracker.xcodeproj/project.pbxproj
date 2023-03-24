@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */; };
 		55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC269629CCB28A006333B4 /* AppDelegate.swift */; };
 		55BC269929CCB28A006333B4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC269829CCB28A006333B4 /* SceneDelegate.swift */; };
 		55BC269B29CCB28A006333B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC269A29CCB28A006333B4 /* ViewController.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extenstions.swift"; sourceTree = "<group>"; };
 		55BC269329CCB28A006333B4 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55BC269629CCB28A006333B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55BC269829CCB28A006333B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +49,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		55B06F9629CDB1F100A7F900 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		55BC268A29CCB28A006333B4 = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +80,7 @@
 				55BC269829CCB28A006333B4 /* SceneDelegate.swift */,
 				55BC269A29CCB28A006333B4 /* ViewController.swift */,
 				55BC269C29CCB28A006333B4 /* Main.storyboard */,
+				55B06F9629CDB1F100A7F900 /* Helpers */,
 				55B06F9529CDAEC800A7F900 /* Resources */,
 			);
 			path = Tracker;
@@ -146,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */,
 				55BC269B29CCB28A006333B4 /* ViewController.swift in Sources */,
 				55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */,
 				55BC269929CCB28A006333B4 /* SceneDelegate.swift in Sources */,
