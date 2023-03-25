@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55A6B16C29CE1D17005449F4 /* TrackersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6B16B29CE1D17005449F4 /* TrackersCell.swift */; };
+		55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6B16B29CE1D17005449F4 /* TrackerCell.swift */; };
 		55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */; };
 		55B06F9B29CDB63B00A7F900 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9A29CDB63B00A7F900 /* TabBarController.swift */; };
 		55B06F9D29CDB76D00A7F900 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9C29CDB76D00A7F900 /* StatisticsViewController.swift */; };
@@ -19,11 +19,12 @@
 		55F6512229CF0BFF00C3E4F2 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F6512129CF0BFF00C3E4F2 /* Tracker.swift */; };
 		55F6512429CF14E700C3E4F2 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F6512329CF14E700C3E4F2 /* TrackerCategory.swift */; };
 		55F6512629CF15D600C3E4F2 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F6512529CF15D600C3E4F2 /* TrackerRecord.swift */; };
+		55F6512829CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F6512729CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		55A6B16929CE1B9E005449F4 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		55A6B16B29CE1D17005449F4 /* TrackersCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCell.swift; sourceTree = "<group>"; };
+		55A6B16B29CE1D17005449F4 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extenstions.swift"; sourceTree = "<group>"; };
 		55B06F9A29CDB63B00A7F900 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		55B06F9C29CDB76D00A7F900 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +38,7 @@
 		55F6512129CF0BFF00C3E4F2 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		55F6512329CF14E700C3E4F2 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		55F6512529CF15D600C3E4F2 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		55F6512729CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +56,8 @@
 			isa = PBXGroup;
 			children = (
 				55BC269A29CCB28A006333B4 /* TrackersViewController.swift */,
-				55A6B16B29CE1D17005449F4 /* TrackersCell.swift */,
+				55A6B16B29CE1D17005449F4 /* TrackerCell.swift */,
+				55F6512729CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
@@ -199,7 +202,8 @@
 			files = (
 				55F6512429CF14E700C3E4F2 /* TrackerCategory.swift in Sources */,
 				55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */,
-				55A6B16C29CE1D17005449F4 /* TrackersCell.swift in Sources */,
+				55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */,
+				55F6512829CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift in Sources */,
 				55BC269B29CCB28A006333B4 /* TrackersViewController.swift in Sources */,
 				55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */,
 				55F6512629CF15D600C3E4F2 /* TrackerRecord.swift in Sources */,
