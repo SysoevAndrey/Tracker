@@ -23,7 +23,7 @@ struct Tracker: Identifiable {
     }
 }
 
-enum WeekDay: String {
+enum WeekDay: String, CaseIterable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
     case wednesday = "Среда"
