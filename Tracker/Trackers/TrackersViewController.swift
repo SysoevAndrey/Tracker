@@ -41,7 +41,7 @@ final class TrackersViewController: UIViewController {
                     weight: .bold
                 )
             )!,
-            target: self, action: #selector(test))
+            target: self, action: #selector(didTapPlusButton))
         button.tintColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -161,7 +161,11 @@ final class TrackersViewController: UIViewController {
     // MARK: - Actions
     
     @objc
-    private func test() {}
+    private func didTapPlusButton() {
+        let addTrackerViewController = AddTrackerViewController()
+        let navigationController = UINavigationController(rootViewController: addTrackerViewController)
+        present(navigationController, animated: true)
+    }
     
     @objc
     private func didChangedDatePicker(_ sender: UIDatePicker) {

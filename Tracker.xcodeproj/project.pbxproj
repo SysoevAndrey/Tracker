@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		553176F929D19D9B00DEFCFF /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553176F829D19D9B00DEFCFF /* AddTrackerViewController.swift */; };
+		553176FC29D1A16900DEFCFF /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553176FB29D1A16900DEFCFF /* Button.swift */; };
 		55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6B16B29CE1D17005449F4 /* TrackerCell.swift */; };
 		55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */; };
 		55B06F9B29CDB63B00A7F900 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9A29CDB63B00A7F900 /* TabBarController.swift */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		553176F829D19D9B00DEFCFF /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
+		553176FB29D1A16900DEFCFF /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		55A6B16929CE1B9E005449F4 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		55A6B16B29CE1D17005449F4 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extenstions.swift"; sourceTree = "<group>"; };
@@ -56,6 +60,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		553176FA29D1A15D00DEFCFF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				553176FB29D1A16900DEFCFF /* Button.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		553176FD29D1B25400DEFCFF /* AddTracker */ = {
+			isa = PBXGroup;
+			children = (
+				553176F829D19D9B00DEFCFF /* AddTrackerViewController.swift */,
+			);
+			path = AddTracker;
+			sourceTree = "<group>";
+		};
+		553176FE29D1B27100DEFCFF /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				55B06F9C29CDB76D00A7F900 /* StatisticsViewController.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
 		55A6B16A29CE1CE5005449F4 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,9 +141,11 @@
 		55BC269529CCB28A006333B4 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				553176FA29D1A15D00DEFCFF /* Components */,
 				55B06F9929CDB62D00A7F900 /* TabBar */,
 				55A6B16A29CE1CE5005449F4 /* Trackers */,
-				55B06F9C29CDB76D00A7F900 /* StatisticsViewController.swift */,
+				553176FE29D1B27100DEFCFF /* Statistics */,
+				553176FD29D1B25400DEFCFF /* AddTracker */,
 				55F6512029CF0BEF00C3E4F2 /* Models */,
 				55BC269629CCB28A006333B4 /* AppDelegate.swift */,
 				55BC269829CCB28A006333B4 /* SceneDelegate.swift */,
@@ -216,9 +246,11 @@
 				55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */,
 				55F6512629CF15D600C3E4F2 /* TrackerRecord.swift in Sources */,
 				55F6512229CF0BFF00C3E4F2 /* Tracker.swift in Sources */,
+				553176FC29D1A16900DEFCFF /* Button.swift in Sources */,
 				55B06F9D29CDB76D00A7F900 /* StatisticsViewController.swift in Sources */,
 				55B06F9B29CDB63B00A7F900 /* TabBarController.swift in Sources */,
 				55BC269929CCB28A006333B4 /* SceneDelegate.swift in Sources */,
+				553176F929D19D9B00DEFCFF /* AddTrackerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
