@@ -110,7 +110,7 @@ final class TrackersViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let params = GeometricParams(cellCount: 2, leftInset: 16, rightInset: 16, cellSpacing: 10)
+    private let params = UICollectionView.GeometricParams(cellCount: 2, leftInset: 16, rightInset: 16, cellSpacing: 10)
     private let categories: [TrackerCategory] = TrackerCategory.sampleData
     private var searchText = ""
     private var currentDate = Date.from(date: Date())!
@@ -177,22 +177,6 @@ final class TrackersViewController: UIViewController {
 // MARK: - Layout methods
 
 private extension TrackersViewController {
-    struct GeometricParams {
-        let cellCount: CGFloat
-        let leftInset: CGFloat
-        let rightInset: CGFloat
-        let cellSpacing: CGFloat
-        let paddingWidth: CGFloat
-        
-        init(cellCount: CGFloat, leftInset: CGFloat, rightInset: CGFloat, cellSpacing: CGFloat) {
-            self.cellCount = cellCount
-            self.leftInset = leftInset
-            self.rightInset = rightInset
-            self.cellSpacing = cellSpacing
-            self.paddingWidth = leftInset + rightInset + CGFloat(cellCount - 1) * cellSpacing
-        }
-    }
-    
     func setupContent() {
         view.backgroundColor = .white
         view.addSubview(plusButton)
