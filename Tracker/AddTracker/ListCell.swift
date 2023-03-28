@@ -51,6 +51,8 @@ final class ListCell: UICollectionViewCell {
     }
 }
 
+// MARK: - Layout methods
+
 private extension ListCell {
     func setupContent() {
         contentView.addSubview(listItem)
