@@ -17,6 +17,7 @@
 		5531771029D2BC5D00DEFCFF /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531770F29D2BC5D00DEFCFF /* ListItem.swift */; };
 		5531771229D2D04500DEFCFF /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531771129D2D04500DEFCFF /* EmojiCell.swift */; };
 		5531771429D2D93800DEFCFF /* SelectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531771329D2D93800DEFCFF /* SelectionTitle.swift */; };
+		5531771629D2E54200DEFCFF /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531771529D2E54200DEFCFF /* ColorCell.swift */; };
 		55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6B16B29CE1D17005449F4 /* TrackerCell.swift */; };
 		55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */; };
 		55B06F9B29CDB63B00A7F900 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B06F9A29CDB63B00A7F900 /* TabBarController.swift */; };
@@ -45,6 +46,7 @@
 		5531770F29D2BC5D00DEFCFF /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		5531771129D2D04500DEFCFF /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
 		5531771329D2D93800DEFCFF /* SelectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTitle.swift; sourceTree = "<group>"; };
+		5531771529D2E54200DEFCFF /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		55A6B16929CE1B9E005449F4 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		55A6B16B29CE1D17005449F4 /* TrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCell.swift; sourceTree = "<group>"; };
 		55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extenstions.swift"; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				5531770D29D2BB6900DEFCFF /* ListCell.swift */,
 				5531771129D2D04500DEFCFF /* EmojiCell.swift */,
 				5531771329D2D93800DEFCFF /* SelectionTitle.swift */,
+				5531771529D2E54200DEFCFF /* ColorCell.swift */,
 			);
 			path = AddTracker;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				553176FC29D1A16900DEFCFF /* Button.swift in Sources */,
 				5531770E29D2BB6900DEFCFF /* ListCell.swift in Sources */,
 				5531770229D1DF7500DEFCFF /* TextFieldCell.swift in Sources */,
+				5531771629D2E54200DEFCFF /* ColorCell.swift in Sources */,
 				5531771029D2BC5D00DEFCFF /* ListItem.swift in Sources */,
 				55B06F9D29CDB76D00A7F900 /* StatisticsViewController.swift in Sources */,
 				55B06F9B29CDB63B00A7F900 /* TabBarController.swift in Sources */,

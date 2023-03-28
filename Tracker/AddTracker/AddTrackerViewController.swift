@@ -34,6 +34,7 @@ final class AddTrackerViewController: UIViewController {
         collection.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
         collection.register(ListCell.self, forCellWithReuseIdentifier: ListCell.identifier)
         collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.identifier)
+        collection.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.identifier)
         collection.register(
             TextFieldValidationMessage.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
@@ -44,6 +45,7 @@ final class AddTrackerViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: SelectionTitle.identifier
         )
+        collection.allowsMultipleSelection = true
         return collection
     }()
     
@@ -53,6 +55,7 @@ final class AddTrackerViewController: UIViewController {
     private var category: String?
     private var schedule: [WeekDay]?
     private var emoji: String?
+    private var color: UIColor?
     
     private var isConfirmButtonEnabled: Bool {
         labelText.count > 0 && !isValidationMessageVisible
@@ -180,6 +183,15 @@ extension AddTrackerViewController: UICollectionViewDataSource {
             return cell
         }
         
+        if indexPath.section == 3 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.identifier, for: indexPath) as? ColorCell else { return UICollectionViewCell() }
+            
+            let color = colors[indexPath.row]
+            cell.configure(with: color)
+            
+            return cell
+        }
+        
         return UICollectionViewCell()
     }
 }
@@ -194,7 +206,7 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
     {
         switch indexPath.section {
         case 0, 1: return CGSize(width: collectionView.bounds.width - 32, height: 75)
-        case 2: return CGSize(width: 52, height: 52)
+        case 2, 3: return CGSize(width: 52, height: 52)
         default: return .zero
         }
     }
@@ -207,6 +219,7 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         switch section {
         case 0, 1: return 0
         case 2: return 10
+        case 3: return 0
         default: return 0
         }
     }
@@ -217,7 +230,7 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         minimumInteritemSpacingForSectionAt section: Int) -> CGFloat
     {
         switch section {
-        case 2: return (collectionView.bounds.width - 48 - 6 * 52) / 5
+        case 2, 3: return (collectionView.bounds.width - 48 - 6 * 52) / 5
         default: return 0
         }
     }
@@ -230,7 +243,8 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         switch section {
         case 0: return UIEdgeInsets(top: 24, left: 16, bottom: 8, right: 16)
         case 1: return UIEdgeInsets(top: 24, left: 16, bottom: 32, right: 16)
-        case 2: return UIEdgeInsets(top: 32, left: 16, bottom: 0, right: 16)
+        case 2: return UIEdgeInsets(top: 30, left: 16, bottom: 30, right: 16)
+        case 3: return UIEdgeInsets(top: 30, left: 16, bottom: 30, right: 16)
         default: return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
     }
@@ -261,6 +275,17 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
                 ) as? SelectionTitle
             else { return UICollectionReusableView() }
             view.configure(with: "Emoji")
+            return view
+        case 3:
+            guard
+                kind == UICollectionView.elementKindSectionHeader,
+                let view = collectionView.dequeueReusableSupplementaryView(
+                    ofKind: kind,
+                    withReuseIdentifier: SelectionTitle.identifier,
+                    for: indexPath
+                ) as? SelectionTitle
+            else { return UICollectionReusableView() }
+            view.configure(with: "Цвет")
             return view
         default:
             return UICollectionReusableView()
@@ -296,7 +321,7 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int) -> CGSize
     {
-        guard section == 2 else { return .zero }
+        guard section > 1 else { return .zero }
         
         let indexPath = IndexPath(row: 0, section: section)
         let headerView = self.collectionView(
@@ -320,29 +345,40 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
 
 extension AddTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let selectedPaths = collectionView.indexPathsForSelectedItems else { return }
+        
         switch indexPath.section {
         case 2:
-            guard
-                let selectedPaths = collectionView.indexPathsForSelectedItems,
-                let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
-            else { return }
+            guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell else { return }
             
             for selectedPath in selectedPaths {
                 if selectedPath.section == indexPath.section && selectedPath.row != indexPath.row {
                     collectionView.deselectItem(at: selectedPath, animated: true)
+                    guard let cellToDeselect = collectionView.cellForItem(at: selectedPath) as? EmojiCell else { return }
+                    cellToDeselect.deselect()
+                    emoji = nil
                 }
             }
+            
             cell.select()
             emoji = emojis[indexPath.row]
+        case 3:
+            guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCell else { return }
+            
+            for selectedPath in selectedPaths {
+                if selectedPath.section == indexPath.section && selectedPath.row != indexPath.row {
+                    collectionView.deselectItem(at: selectedPath, animated: true)
+                    guard let cellToDeselect = collectionView.cellForItem(at: selectedPath) as? ColorCell else { return }
+                    cellToDeselect.deselect()
+                    color = nil
+                }
+            }
+            
+            cell.select()
+            color = colors[indexPath.row]
         default:
             return
         }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell else { return }
-        cell.deselect()
-        emoji = nil
     }
 }
 
