@@ -32,6 +32,7 @@ final class AddTrackerViewController: UIViewController {
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.isHidden = true
         collection.register(TextFieldCell.self, forCellWithReuseIdentifier: TextFieldCell.identifier)
+        collection.register(ListCell.self, forCellWithReuseIdentifier: ListCell.identifier)
         collection.register(
             TextFieldValidationMessage.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
@@ -43,13 +44,15 @@ final class AddTrackerViewController: UIViewController {
     // MARK: - Properties
     
     private var labelText = ""
+    private var category: String?
+    private var schedule: [WeekDay]?
     
     private var isConfirmButtonEnabled: Bool {
         labelText.count > 0 && !isValidationMessageVisible
     }
     
-    private var isRegular = false
     private var isValidationMessageVisible = false
+    private var parameters = ["Категория", "Расписание"]
     private let emojis = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -91,17 +94,19 @@ final class AddTrackerViewController: UIViewController {
     @objc
     private func didTapAddHabitButton() {
         title = "Новая привычка"
-        isRegular = true
+        schedule = []
         buttonsStack.isHidden = true
         collectionView.isHidden = false
+        collectionView.reloadData()
     }
     
     @objc
     private func didTapAddIrregularEventButton() {
         title = "Новое нерегулярное событие"
-        isRegular = false
+        schedule = nil
         buttonsStack.isHidden = true
         collectionView.isHidden = false
+        collectionView.reloadData()
     }
 }
 
@@ -145,30 +150,37 @@ private extension AddTrackerViewController {
 
 extension AddTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        4
-        1
+        4
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:
-//            return 1
-//        case 1:
-//            return isRegular ? 2 : 1
-//        case 2:
-//            return emojis.count
-//        case 3:
-//            return colors.count
-//        default:
-//            return 0
-//        }
-        1
+        switch section {
+        case 0: return 1
+        case 1: return schedule != nil ? 2 : 1
+        case 2: return emojis.count
+        case 3: return colors.count
+        default: return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TextFieldCell.identifier, for: indexPath) as? TextFieldCell else { return UICollectionViewCell() }
             cell.delegate = self
+            return cell
+        }
+        
+        if indexPath.section == 1 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCell.identifier, for: indexPath) as? ListCell else { return UICollectionViewCell() }
+            var position: ListItem.Position
+            
+            if schedule == nil {
+                position = .alone
+            } else {
+                position = indexPath.row == 0 ? .first : .last
+            }
+            
+            cell.configure(label: parameters[indexPath.row], position: position)
             return cell
         }
         
@@ -185,10 +197,19 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         switch indexPath.section {
-        case 0:
-            return CGSize(width: collectionView.bounds.width - 32, height: 75)
-        default:
-            return .zero
+        case 0, 1: return CGSize(width: collectionView.bounds.width - 32, height: 75)
+        default: return .zero
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int) -> CGFloat
+    {
+        switch section {
+        case 0, 1: return 0
+        default: return 0
         }
     }
     
@@ -198,7 +219,7 @@ extension AddTrackerViewController: UICollectionViewDelegateFlowLayout {
         insetForSectionAt section: Int) -> UIEdgeInsets
     {
         switch section {
-        case 0:
+        case 0, 1:
             return UIEdgeInsets(top: 24, left: 16, bottom: 8, right: 16)
         default:
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
