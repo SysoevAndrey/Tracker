@@ -8,6 +8,14 @@
 import UIKit
 
 final class ListItem: UIView {
+    private let border: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .gray
+        view.isHidden = true
+        return view
+    }()
+    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -22,21 +30,16 @@ final class ListItem: UIView {
     // MARK: - Methods
     
     func configure(with position: Position = .middle) {
-        let borderWidth: CGFloat = 0.5
-        let border = CALayer()
-        border.backgroundColor = UIColor.gray.cgColor
-        border.frame = CGRectMake(16, self.frame.size.height - borderWidth, self.frame.size.width - 32, borderWidth)
-        
         layer.masksToBounds = true
         layer.cornerRadius = 10
         
         switch position {
         case .first:
             layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            layer.addSublayer(border)
+            border.isHidden = false
         case .middle:
             layer.cornerRadius = 0
-            layer.addSublayer(border)
+            border.isHidden = false
         case .last:
             layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         case .alone:
@@ -48,6 +51,15 @@ final class ListItem: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.cornerRadius = 16
         self.backgroundColor = .background
+        
+        self.addSubview(border)
+        
+        NSLayoutConstraint.activate([
+            border.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            border.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            border.bottomAnchor.constraint(equalTo: bottomAnchor),
+            border.heightAnchor.constraint(equalToConstant: 0.5)
+        ])
     }
 }
 

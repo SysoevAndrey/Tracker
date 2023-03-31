@@ -111,7 +111,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - Properties
     
     private let params = UICollectionView.GeometricParams(cellCount: 2, leftInset: 16, rightInset: 16, cellSpacing: 10)
-    private let categories: [TrackerCategory] = TrackerCategory.sampleData
+    private var categories: [TrackerCategory] = TrackerCategory.sampleData
     private var searchText = ""
     private var currentDate = Date.from(date: Date())!
     private var completedTrackers: Set<TrackerRecord> = []
@@ -163,6 +163,7 @@ final class TrackersViewController: UIViewController {
     @objc
     private func didTapPlusButton() {
         let addTrackerViewController = AddTrackerViewController()
+        addTrackerViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: addTrackerViewController)
         present(navigationController, animated: true)
     }
@@ -362,5 +363,29 @@ extension TrackersViewController: TrackerCellDelegate {
             cell.toggleCompletedButton(to: true)
             cell.increaseCount()
         }
+    }
+}
+
+// MARK: - AddTrackerViewControllerDelegate
+
+extension TrackersViewController: AddTrackerViewControllerDelegate {
+    func didSelectTracker(with type: AddTrackerViewController.TrackerType) {
+        dismiss(animated: true)
+        let trackerFormViewController = TrackerFormViewController(type: type)
+        trackerFormViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: trackerFormViewController)
+        present(navigationController, animated: true)
+    }
+}
+
+extension TrackersViewController: TrackerFormViewControllerDelegate {
+    func didTapConfirmButton() {
+        dismiss(animated: true)
+        categories = TrackerCategory.sampleData
+        collectionView.reloadData()
+    }
+    
+    func didTapCancelButton() {
+        dismiss(animated: true)
     }
 }

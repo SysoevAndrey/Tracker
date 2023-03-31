@@ -13,7 +13,7 @@ struct TrackerCategory {
 }
 
 extension TrackerCategory {
-    static let sampleData: [TrackerCategory] = [
+    static var sampleData: [TrackerCategory] = [
         TrackerCategory(
             label: "Домашний уют",
             trackers: [

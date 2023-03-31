@@ -23,7 +23,6 @@ extension UIColor {
         UIColor(named: "Color selection 4")!,
         UIColor(named: "Color selection 5")!,
         UIColor(named: "Color selection 6")!,
-        UIColor(named: "Color selection 6")!,
         UIColor(named: "Color selection 7")!,
         UIColor(named: "Color selection 8")!,
         UIColor(named: "Color selection 9")!,
