@@ -38,7 +38,7 @@ final class AddTrackerViewController: UIViewController {
     
     private var labelText = ""
     private var category: String?
-    private var schedule: [WeekDay]?
+    private var schedule: [Weekday]?
     private var emoji: String?
     private var color: UIColor?
     

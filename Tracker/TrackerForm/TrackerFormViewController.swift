@@ -72,10 +72,28 @@ final class TrackerFormViewController: UIViewController {
             checkFromValidation()
         }
     }
-    private var schedule: [WeekDay]? {
+    private var schedule: [Weekday]? {
         didSet {
             checkFromValidation()
         }
+    }
+    private var scheduleString: String? {
+        guard let schedule else { return nil }
+        if schedule.count == Weekday.allCases.count { return "Каждый день" }
+        let shortForms: [String] = schedule.map { weekday in
+            var shortForm: String
+            switch weekday {
+            case .monday: shortForm = "Пн"
+            case .tuesday: shortForm = "Вт"
+            case .wednesday: shortForm = "Ср"
+            case .thurshday: shortForm = "Чт"
+            case .friday: shortForm = "Пт"
+            case .saturday: shortForm = "Сб"
+            case .sunday: shortForm = "Вс"
+            }
+            return shortForm
+        }
+        return shortForms.joined(separator: ", ")
     }
     private var emoji: String? {
         didSet {
@@ -246,14 +264,14 @@ private extension TrackerFormViewController {
             textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            textField.heightAnchor.constraint(equalToConstant: 75),
+            textField.heightAnchor.constraint(equalToConstant: ListItem.height),
             // validationMessage
             validationMessage.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
             validationMessage.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 8),
             // parametersTableView
             parametersTableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             parametersTableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-            parametersTableView.heightAnchor.constraint(equalToConstant: schedule == nil ? ListCell.height : 2 *  ListCell.height),
+            parametersTableView.heightAnchor.constraint(equalToConstant: schedule == nil ? ListItem.height : 2 *  ListItem.height),
             // buttonsStack
             buttonsStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             buttonsStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -285,7 +303,7 @@ extension TrackerFormViewController: UITableViewDataSource {
             value = category
         } else {
             position = indexPath.row == 0 ? .first : .last
-            value = indexPath.row == 0 ? category : nil
+            value = indexPath.row == 0 ? category : scheduleString
         }
 
         listCell.configure(label: parameters[indexPath.row], value: value, position: position)
@@ -297,10 +315,27 @@ extension TrackerFormViewController: UITableViewDataSource {
 
 extension TrackerFormViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: - handle selection
+        switch indexPath.row {
+        case 1:
+            guard let schedule else { return }
+            let scheduleViewController = ScheduleViewController(selectedWeekdays: schedule)
+            scheduleViewController.delegate = self
+            let navigationController = UINavigationController(rootViewController: scheduleViewController)
+            present(navigationController, animated: true)
+        default:
+            return
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        75
+        ListItem.height
+    }
+}
+
+extension TrackerFormViewController: ScheduleViewControllerDelegate {
+    func didConfirm(_ schedule: [Weekday]) {
+        self.schedule = schedule
+        parametersTableView.reloadData()
+        dismiss(animated: true)
     }
 }

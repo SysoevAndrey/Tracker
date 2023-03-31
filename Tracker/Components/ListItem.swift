@@ -8,6 +8,8 @@
 import UIKit
 
 final class ListItem: UIView {
+    // MARK: - Layout elements
+    
     private let border: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -67,4 +69,6 @@ extension ListItem {
     enum Position {
         case first, middle, last, alone
     }
+    
+    static let height: CGFloat = 75
 }

@@ -12,9 +12,9 @@ struct Tracker: Identifiable {
     var label: String
     var emoji: String
     var color: UIColor
-    var schedule: [WeekDay]?
+    var schedule: [Weekday]?
     
-    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [WeekDay]?) {
+    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [Weekday]?) {
         self.id = id
         self.label = label
         self.emoji = emoji
@@ -23,7 +23,7 @@ struct Tracker: Identifiable {
     }
 }
 
-enum WeekDay: String, CaseIterable {
+enum Weekday: String, CaseIterable, Comparable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
     case wednesday = "Среда"
@@ -31,4 +31,13 @@ enum WeekDay: String, CaseIterable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
+    
+    static func < (lhs: Weekday, rhs: Weekday) -> Bool {
+        guard
+            let first = Self.allCases.firstIndex(of: lhs),
+            let second = Self.allCases.firstIndex(of: rhs)
+        else { return false }
+        
+        return first < second
+    }
 }

@@ -10,7 +10,7 @@ import UIKit
 final class ListCell: UITableViewCell {
     // MARK: - Layout elements
     
-    private lazy var listItem = ListItem(frame: self.frame)
+    private lazy var listItem = ListItem()
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,6 @@ final class ListCell: UITableViewCell {
     // MARK: - Properties
     
     static let identifier = "ListCell"
-    static let height: CGFloat = 75
     
     // MARK: - Lifecycle
     

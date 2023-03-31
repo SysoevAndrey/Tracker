@@ -26,6 +26,8 @@
 		55BC269B29CCB28A006333B4 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55BC269A29CCB28A006333B4 /* TrackersViewController.swift */; };
 		55BC26A029CCB28B006333B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BC269F29CCB28B006333B4 /* Assets.xcassets */; };
 		55BC26A329CCB28B006333B4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55BC26A129CCB28B006333B4 /* LaunchScreen.storyboard */; };
+		55CCE51029D7040E001B23E6 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CCE50F29D7040E001B23E6 /* ScheduleViewController.swift */; };
+		55CCE51229D7091C001B23E6 /* WeekdayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CCE51129D7091C001B23E6 /* WeekdayCell.swift */; };
 		55F530AC29D0851E002D0826 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F530AB29D0851E002D0826 /* Date+Extensions.swift */; };
 		55F530AE29D095DE002D0826 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F530AD29D095DE002D0826 /* Int+Extensions.swift */; };
 		55F6512229CF0BFF00C3E4F2 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F6512129CF0BFF00C3E4F2 /* Tracker.swift */; };
@@ -57,6 +59,8 @@
 		55BC269F29CCB28B006333B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55BC26A229CCB28B006333B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55BC26A429CCB28B006333B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55CCE50F29D7040E001B23E6 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		55CCE51129D7091C001B23E6 /* WeekdayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCell.swift; sourceTree = "<group>"; };
 		55F530AB29D0851E002D0826 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		55F530AD29D095DE002D0826 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		55F6512129CF0BFF00C3E4F2 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 				553176FE29D1B27100DEFCFF /* Statistics */,
 				553176FD29D1B25400DEFCFF /* AddTracker */,
 				559FCC0829D5A205009CEA46 /* TrackerForm */,
+				55CCE50E29D703F4001B23E6 /* Schedule */,
 				55F6512029CF0BEF00C3E4F2 /* Models */,
 				55BC269629CCB28A006333B4 /* AppDelegate.swift */,
 				55BC269829CCB28A006333B4 /* SceneDelegate.swift */,
@@ -185,6 +190,15 @@
 				55B06F9529CDAEC800A7F900 /* Resources */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		55CCE50E29D703F4001B23E6 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				55CCE50F29D7040E001B23E6 /* ScheduleViewController.swift */,
+				55CCE51129D7091C001B23E6 /* WeekdayCell.swift */,
+			);
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		55F6512029CF0BEF00C3E4F2 /* Models */ = {
@@ -271,6 +285,7 @@
 				55F6512429CF14E700C3E4F2 /* TrackerCategory.swift in Sources */,
 				5531770829D1E9F100DEFCFF /* UICollectionView+Extensions.swift in Sources */,
 				55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */,
+				55CCE51029D7040E001B23E6 /* ScheduleViewController.swift in Sources */,
 				55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */,
 				55F6512829CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift in Sources */,
 				5531771229D2D04500DEFCFF /* EmojiCell.swift in Sources */,
@@ -279,6 +294,7 @@
 				559FCC0A29D5A228009CEA46 /* TrackerFormViewController.swift in Sources */,
 				55F530AC29D0851E002D0826 /* Date+Extensions.swift in Sources */,
 				55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */,
+				55CCE51229D7091C001B23E6 /* WeekdayCell.swift in Sources */,
 				55F6512629CF15D600C3E4F2 /* TrackerRecord.swift in Sources */,
 				5531771429D2D93800DEFCFF /* SelectionTitle.swift in Sources */,
 				55F6512229CF0BFF00C3E4F2 /* Tracker.swift in Sources */,
