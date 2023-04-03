@@ -8,12 +8,17 @@
 import UIKit
 
 struct TrackerCategory {
-    var label: String
-    var trackers: [Tracker]
+    let label: String
+    let trackers: [Tracker]
+    
+    init(label: String, trackers: [Tracker]) {
+        self.label = label
+        self.trackers = trackers
+    }
 }
 
 extension TrackerCategory {
-    static var sampleData: [TrackerCategory] = [
+    static let sampleData: [TrackerCategory] = [
         TrackerCategory(
             label: "Домашний уют",
             trackers: [

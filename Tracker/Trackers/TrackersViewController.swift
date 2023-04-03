@@ -379,9 +379,14 @@ extension TrackersViewController: AddTrackerViewControllerDelegate {
 }
 
 extension TrackersViewController: TrackerFormViewControllerDelegate {
-    func didTapConfirmButton() {
+    func didTapConfirmButton(categoryLabel: String, trackerToAdd: Tracker) {
         dismiss(animated: true)
-        categories = TrackerCategory.sampleData
+        guard let categoryIndex = categories.firstIndex(where: { $0.label == categoryLabel }) else { return }
+        let updatedCategory = TrackerCategory(
+            label: categoryLabel,
+            trackers: categories[categoryIndex].trackers + [trackerToAdd]
+        )
+        categories[categoryIndex] = updatedCategory
         collectionView.reloadData()
     }
     

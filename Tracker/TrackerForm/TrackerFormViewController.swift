@@ -9,7 +9,7 @@ import UIKit
 
 protocol TrackerFormViewControllerDelegate: AnyObject {
     func didTapCancelButton()
-    func didTapConfirmButton()
+    func didTapConfirmButton(categoryLabel: String, trackerToAdd: Tracker)
 }
 
 final class TrackerFormViewController: UIViewController {
@@ -200,9 +200,7 @@ final class TrackerFormViewController: UIViewController {
             schedule: schedule
         )
         
-        TrackerCategory.sampleData[0].trackers.append(newTracker)
-        
-        delegate?.didTapConfirmButton()
+        delegate?.didTapConfirmButton(categoryLabel: category, trackerToAdd: newTracker)
     }
     
     // MARK: - Methods

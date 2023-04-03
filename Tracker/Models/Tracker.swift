@@ -9,10 +9,10 @@ import UIKit
 
 struct Tracker: Identifiable {
     let id: UUID
-    var label: String
-    var emoji: String
-    var color: UIColor
-    var schedule: [Weekday]?
+    let label: String
+    let emoji: String
+    let color: UIColor
+    let schedule: [Weekday]?
     
     init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, schedule: [Weekday]?) {
         self.id = id
@@ -20,6 +20,14 @@ struct Tracker: Identifiable {
         self.emoji = emoji
         self.color = color
         self.schedule = schedule
+    }
+    
+    init(tracker: Tracker) {
+        self.id = tracker.id
+        self.label = tracker.label
+        self.emoji = tracker.emoji
+        self.color = tracker.color
+        self.schedule = tracker.schedule
     }
 }
 
