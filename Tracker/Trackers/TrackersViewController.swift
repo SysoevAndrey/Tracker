@@ -122,7 +122,7 @@ final class TrackersViewController: UIViewController {
         for category in categories {
             let trackersByDay = category.trackers.filter { tracker in
                 guard let schedule = tracker.schedule else { return true }
-                return schedule.contains(Weekday.allCases[weekday - 2])
+                return schedule.contains(Weekday.allCases[weekday > 1 ? weekday - 2 : weekday + 5])
             }
             
             if searchText.isEmpty && !trackersByDay.isEmpty {
