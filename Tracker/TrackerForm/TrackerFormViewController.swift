@@ -25,7 +25,7 @@ final class TrackerFormViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = .red
-        label.text = "Ограничение 38 символов"
+        label.text = "Ограничение \(Constants.labelLimit) символов"
         return label
     }()
     private let parametersTableView: UITableView = {
@@ -75,19 +75,7 @@ final class TrackerFormViewController: UIViewController {
     private var scheduleString: String? {
         guard let schedule = data.schedule else { return nil }
         if schedule.count == Weekday.allCases.count { return "Каждый день" }
-        let shortForms: [String] = schedule.map { weekday in
-            var shortForm: String
-            switch weekday {
-            case .monday: shortForm = "Пн"
-            case .tuesday: shortForm = "Вт"
-            case .wednesday: shortForm = "Ср"
-            case .thurshday: shortForm = "Чт"
-            case .friday: shortForm = "Пт"
-            case .saturday: shortForm = "Сб"
-            case .sunday: shortForm = "Вс"
-            }
-            return shortForm
-        }
+        let shortForms: [String] = schedule.map { $0.shortForm }
         return shortForms.joined(separator: ", ")
     }
     
@@ -163,7 +151,7 @@ final class TrackerFormViewController: UIViewController {
     private func didChangedLabelTextField(_ sender: UITextField) {
         guard let text = sender.text else { return }
         data.label = text
-        if text.count > 38 {
+        if text.count > Constants.labelLimit {
             isValidationMessageVisible = true
         } else {
             isValidationMessageVisible = false

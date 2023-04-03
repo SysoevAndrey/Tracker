@@ -50,11 +50,11 @@ final class ListItem: UIView {
     }
     
     private func setupView() {
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.layer.cornerRadius = 16
-        self.backgroundColor = .background
+        translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = 16
+        backgroundColor = .background
         
-        self.addSubview(border)
+        addSubview(border)
         
         NSLayoutConstraint.activate([
             border.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),

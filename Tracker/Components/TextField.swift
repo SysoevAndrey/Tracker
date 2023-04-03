@@ -17,11 +17,11 @@ final class TextField: UITextField {
     
     convenience init(placeholder: String) {
         self.init()
-        self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .background
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .background
         self.placeholder = placeholder
-        self.clearButtonMode = .whileEditing
-        self.layer.cornerRadius = 16
+        clearButtonMode = .whileEditing
+        layer.cornerRadius = 16
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
