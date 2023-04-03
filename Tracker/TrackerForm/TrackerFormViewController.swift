@@ -60,25 +60,20 @@ final class TrackerFormViewController: UIViewController {
     weak var delegate: TrackerFormViewControllerDelegate?
     private let type: AddTrackerViewController.TrackerType
     
-    private var tracker: Tracker?
-    
-    private var labelText = "" {
+    private var data: Tracker.Data {
         didSet {
             checkFromValidation()
         }
     }
+    
     private var category: String? = TrackerCategory.sampleData[0].label {
         didSet {
             checkFromValidation()
         }
     }
-    private var schedule: [Weekday]? {
-        didSet {
-            checkFromValidation()
-        }
-    }
+
     private var scheduleString: String? {
-        guard let schedule else { return nil }
+        guard let schedule = data.schedule else { return nil }
         if schedule.count == Weekday.allCases.count { return "Каждый день" }
         let shortForms: [String] = schedule.map { weekday in
             var shortForm: String
@@ -94,16 +89,6 @@ final class TrackerFormViewController: UIViewController {
             return shortForm
         }
         return shortForms.joined(separator: ", ")
-    }
-    private var emoji: String? {
-        didSet {
-            checkFromValidation()
-        }
-    }
-    private var color: UIColor? {
-        didSet {
-            checkFromValidation()
-        }
     }
     
     private var isConfirmButtonEnabled: Bool = false {
@@ -142,13 +127,14 @@ final class TrackerFormViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    init(type: AddTrackerViewController.TrackerType) {
+    init(type: AddTrackerViewController.TrackerType, data: Tracker.Data = Tracker.Data()) {
         self.type = type
+        self.data = data
         switch type {
         case .habit:
-            schedule = []
+            self.data.schedule = []
         case .irregularEvent:
-            schedule = nil
+            self.data.schedule = nil
         }
         super.init(nibName: nil, bundle: nil)
     }
@@ -165,8 +151,8 @@ final class TrackerFormViewController: UIViewController {
         setupContent()
         setupConstraints()
         
-        emoji = emojis.randomElement()
-        color = colors.randomElement()
+        data.emoji = emojis.randomElement()
+        data.color = colors.randomElement()
         
         checkFromValidation()
     }
@@ -176,7 +162,7 @@ final class TrackerFormViewController: UIViewController {
     @objc
     private func didChangedLabelTextField(_ sender: UITextField) {
         guard let text = sender.text else { return }
-        labelText = text
+        data.label = text
         if text.count > 38 {
             isValidationMessageVisible = true
         } else {
@@ -191,13 +177,13 @@ final class TrackerFormViewController: UIViewController {
     
     @objc
     private func didTapConfirmButton() {
-        guard let category, let emoji, let color else { return }
+        guard let category, let emoji = data.emoji, let color = data.color else { return }
         
         let newTracker = Tracker(
-            label: labelText,
+            label: data.label,
             emoji: emoji,
             color: color,
-            schedule: schedule
+            schedule: data.schedule
         )
         
         delegate?.didTapConfirmButton(categoryLabel: category, trackerToAdd: newTracker)
@@ -206,7 +192,7 @@ final class TrackerFormViewController: UIViewController {
     // MARK: - Methods
     
     private func checkFromValidation() {
-        if labelText.count == 0 {
+        if data.label.count == 0 {
             isConfirmButtonEnabled = false
             return
         }
@@ -216,12 +202,12 @@ final class TrackerFormViewController: UIViewController {
             return
         }
         
-        if category == nil || emoji == nil || color == nil {
+        if category == nil || data.emoji == nil || data.color == nil {
             isConfirmButtonEnabled = false
             return
         }
         
-        if let schedule, schedule.isEmpty {
+        if let schedule = data.schedule, schedule.isEmpty {
             isConfirmButtonEnabled = false
             return
         }
@@ -269,7 +255,7 @@ private extension TrackerFormViewController {
             // parametersTableView
             parametersTableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             parametersTableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
-            parametersTableView.heightAnchor.constraint(equalToConstant: schedule == nil ? ListItem.height : 2 *  ListItem.height),
+            parametersTableView.heightAnchor.constraint(equalToConstant: data.schedule == nil ? ListItem.height : 2 *  ListItem.height),
             // buttonsStack
             buttonsStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             buttonsStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -283,7 +269,7 @@ private extension TrackerFormViewController {
 
 extension TrackerFormViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if schedule == nil {
+        if data.schedule == nil {
             return 1
         }
         return 2
@@ -296,7 +282,7 @@ extension TrackerFormViewController: UITableViewDataSource {
         var position: ListItem.Position
         var value: String? = nil
 
-        if schedule == nil {
+        if data.schedule == nil {
             position = .alone
             value = category
         } else {
@@ -315,7 +301,7 @@ extension TrackerFormViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 1:
-            guard let schedule else { return }
+            guard let schedule = data.schedule else { return }
             let scheduleViewController = ScheduleViewController(selectedWeekdays: schedule)
             scheduleViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: scheduleViewController)
@@ -332,7 +318,7 @@ extension TrackerFormViewController: UITableViewDelegate {
 
 extension TrackerFormViewController: ScheduleViewControllerDelegate {
     func didConfirm(_ schedule: [Weekday]) {
-        self.schedule = schedule
+        data.schedule = schedule
         parametersTableView.reloadData()
         dismiss(animated: true)
     }
