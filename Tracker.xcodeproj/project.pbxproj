@@ -108,6 +108,20 @@
 			path = Statistics;
 			sourceTree = "<group>";
 		};
+		558D5C8D29E2E9FC00C60519 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				553176FA29D1A15D00DEFCFF /* Components */,
+				55B06F9929CDB62D00A7F900 /* TabBar */,
+				55A6B16A29CE1CE5005449F4 /* Trackers */,
+				553176FE29D1B27100DEFCFF /* Statistics */,
+				553176FD29D1B25400DEFCFF /* AddTracker */,
+				559FCC0829D5A205009CEA46 /* TrackerForm */,
+				55CCE50E29D703F4001B23E6 /* Schedule */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		559FCC0829D5A205009CEA46 /* TrackerForm */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +157,7 @@
 		55B06F9629CDB1F100A7F900 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				555FC09629DADA6100E6C0D9 /* Constants.swift */,
 				55F530AB29D0851E002D0826 /* Date+Extensions.swift */,
 				55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */,
 				55F530AD29D095DE002D0826 /* Int+Extensions.swift */,
@@ -178,17 +193,10 @@
 		55BC269529CCB28A006333B4 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				553176FA29D1A15D00DEFCFF /* Components */,
-				55B06F9929CDB62D00A7F900 /* TabBar */,
-				55A6B16A29CE1CE5005449F4 /* Trackers */,
-				553176FE29D1B27100DEFCFF /* Statistics */,
-				553176FD29D1B25400DEFCFF /* AddTracker */,
-				559FCC0829D5A205009CEA46 /* TrackerForm */,
-				55CCE50E29D703F4001B23E6 /* Schedule */,
-				55F6512029CF0BEF00C3E4F2 /* Models */,
-				555FC09629DADA6100E6C0D9 /* Constants.swift */,
 				55BC269629CCB28A006333B4 /* AppDelegate.swift */,
 				55BC269829CCB28A006333B4 /* SceneDelegate.swift */,
+				558D5C8D29E2E9FC00C60519 /* UI */,
+				55F6512029CF0BEF00C3E4F2 /* Models */,
 				55B06F9629CDB1F100A7F900 /* Helpers */,
 				55B06F9529CDAEC800A7F900 /* Resources */,
 			);

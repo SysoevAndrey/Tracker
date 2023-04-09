@@ -15,6 +15,11 @@ protocol TrackerFormViewControllerDelegate: AnyObject {
 final class TrackerFormViewController: UIViewController {
     // MARK: - Layout elements
     
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
     private lazy var textField: UITextField = {
         let textField = TextField(placeholder: "Введите название трекера")
         textField.addTarget(self, action: #selector(didChangedLabelTextField), for: .editingChanged)
@@ -35,6 +40,30 @@ final class TrackerFormViewController: UIViewController {
         table.isScrollEnabled = false
         table.register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
         return table
+    }()
+    private let emojisCollection: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.isScrollEnabled = false
+        collection.register(
+            SelectionTitle.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: SelectionTitle.identifier
+        )
+        collection.register(EmojiCell.self, forCellWithReuseIdentifier: EmojiCell.identifier)
+        return collection
+    }()
+    private let colorsCollection: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.isScrollEnabled = false
+        collection.register(
+            SelectionTitle.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: SelectionTitle.identifier
+        )
+        collection.register(ColorCell.self, forCellWithReuseIdentifier: ColorCell.identifier)
+        return collection
     }()
     private lazy var cancelButton: UIButton = {
         let button = Button.danger(title: "Отменить")
@@ -112,6 +141,15 @@ final class TrackerFormViewController: UIViewController {
         "🥦", "🏓", "🥇", "🎸", "🏝", "😪",
     ]
     private let colors = UIColor.selection
+    private let params = UICollectionView.GeometricParams(
+        cellCount: 6,
+        leftInset: 28,
+        rightInset: 28,
+        topInset: 24,
+        bottomInset: 24,
+        height: 52,
+        cellSpacing: 5
+    )
     
     // MARK: - Lifecycle
     
@@ -213,14 +251,25 @@ private extension TrackerFormViewController {
         case .irregularEvent: title = "Новое нерегулярное событие"
         }
         
+        scrollView.contentSize = view.frame.size
+        
         parametersTableView.dataSource = self
         parametersTableView.delegate = self
         
+        emojisCollection.dataSource = self
+        emojisCollection.delegate = self
+        
+        colorsCollection.dataSource = self
+        colorsCollection.delegate = self
+        
         view.backgroundColor = .white
-        view.addSubview(textField)
-        view.addSubview(validationMessage)
-        view.addSubview(parametersTableView)
-        view.addSubview(buttonsStack)
+        view.addSubview(scrollView)
+        scrollView.addSubview(textField)
+        scrollView.addSubview(validationMessage)
+        scrollView.addSubview(parametersTableView)
+        scrollView.addSubview(emojisCollection)
+        scrollView.addSubview(colorsCollection)
+        scrollView.addSubview(buttonsStack)
         buttonsStack.addArrangedSubview(cancelButton)
         buttonsStack.addArrangedSubview(confirmButton)
     }
@@ -232,10 +281,15 @@ private extension TrackerFormViewController {
         parametersTableViewTopConstraint?.isActive = true
         
         NSLayoutConstraint.activate([
+            // scrollView
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             // textField
-            textField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            textField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            textField.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 16),
+            textField.topAnchor.constraint(equalTo: scrollView.frameLayoutGuide.topAnchor, constant: 24),
+            textField.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -16),
             textField.heightAnchor.constraint(equalToConstant: ListItem.height),
             // validationMessage
             validationMessage.centerXAnchor.constraint(equalTo: textField.centerXAnchor),
@@ -244,10 +298,24 @@ private extension TrackerFormViewController {
             parametersTableView.leadingAnchor.constraint(equalTo: textField.leadingAnchor),
             parametersTableView.trailingAnchor.constraint(equalTo: textField.trailingAnchor),
             parametersTableView.heightAnchor.constraint(equalToConstant: data.schedule == nil ? ListItem.height : 2 *  ListItem.height),
+            // emojiCollection
+            emojisCollection.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            emojisCollection.topAnchor.constraint(equalTo: parametersTableView.bottomAnchor, constant: 32),
+            emojisCollection.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
+            emojisCollection.heightAnchor.constraint(
+                equalToConstant: CGFloat(emojis.count) / params.cellCount * params.height + 18 + params.topInset + params.bottomInset
+            ),
+            // colorsCollection
+            colorsCollection.leadingAnchor.constraint(equalTo: emojisCollection.leadingAnchor),
+            colorsCollection.topAnchor.constraint(equalTo: emojisCollection.bottomAnchor, constant: 16),
+            colorsCollection.trailingAnchor.constraint(equalTo: emojisCollection.trailingAnchor),
+            colorsCollection.heightAnchor.constraint(
+                equalToConstant: CGFloat(colors.count) / params.cellCount * params.height + 18 + params.topInset + params.bottomInset
+            ),
             // buttonsStack
-            buttonsStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            buttonsStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            buttonsStack.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            buttonsStack.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: 20),
+            buttonsStack.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -20),
+            buttonsStack.topAnchor.constraint(equalTo: colorsCollection.bottomAnchor, constant: 16),
             buttonsStack.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
@@ -304,10 +372,128 @@ extension TrackerFormViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - ScheduleViewControllerDelegate
+
 extension TrackerFormViewController: ScheduleViewControllerDelegate {
     func didConfirm(_ schedule: [Weekday]) {
         data.schedule = schedule
         parametersTableView.reloadData()
         dismiss(animated: true)
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension TrackerFormViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch collectionView {
+        case emojisCollection: return emojis.count
+        case colorsCollection: return colors.count
+        default: return 0
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch collectionView {
+        case emojisCollection:
+            guard let emojiCell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.identifier, for: indexPath) as? EmojiCell else { return UICollectionViewCell() }
+            let emoji = emojis[indexPath.row]
+            emojiCell.configure(with: emoji)
+            return emojiCell
+        case colorsCollection:
+            guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.identifier, for: indexPath) as? ColorCell else { return UICollectionViewCell() }
+            let color = colors[indexPath.row]
+            colorCell.configure(with: color)
+            return colorCell
+        default:
+            return UICollectionViewCell()
+        }
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension TrackerFormViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+        let availableSpace = collectionView.frame.width - params.paddingWidth
+        let cellWidth = availableSpace / params.cellCount
+        return CGSize(width: cellWidth, height: params.height)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int) -> UIEdgeInsets
+    {
+        UIEdgeInsets(
+            top: params.topInset,
+            left: params.leftInset,
+            bottom: params.bottomInset,
+            right: params.rightInset
+        )
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        params.cellSpacing
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int) -> CGFloat
+    {
+        0
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath) -> UICollectionReusableView
+    {
+        guard
+            kind == UICollectionView.elementKindSectionHeader,
+            let view = collectionView.dequeueReusableSupplementaryView(
+                ofKind: UICollectionView.elementKindSectionHeader,
+                withReuseIdentifier: SelectionTitle.identifier,
+                for: indexPath
+            ) as? SelectionTitle
+        else { return UICollectionReusableView() }
+        
+        var label: String
+        switch collectionView {
+        case emojisCollection: label = "Emoji"
+        case colorsCollection: label = "Цвет"
+        default: label = ""
+        }
+        
+        view.configure(with: label)
+        
+        return view
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int) -> CGSize
+    {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(
+            collectionView,
+            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+            at: indexPath
+        )
+        
+        return headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: collectionView.frame.width,
+                height: UIView.layoutFittingExpandedSize.height
+            ),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
     }
 }
