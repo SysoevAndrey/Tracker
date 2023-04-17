@@ -393,9 +393,7 @@ extension TrackersViewController: AddTrackerViewControllerDelegate {
 extension TrackersViewController: TrackerFormViewControllerDelegate {
     func didTapConfirmButton(category: TrackerCategory, trackerToAdd: Tracker) {
         dismiss(animated: true)
-        do {
-            try trackerStore.addTracker(trackerToAdd, with: category)
-        } catch {}
+        try? trackerStore.addTracker(trackerToAdd, with: category)
     }
     
     func didTapCancelButton() {
