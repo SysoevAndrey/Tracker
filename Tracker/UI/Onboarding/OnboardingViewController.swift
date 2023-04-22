@@ -18,13 +18,13 @@ final class OnboardingViewController: UIPageViewController {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         
-        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.currentPageIndicatorTintColor = .fullBlack
         
         return pageControl
     }()
     
     private lazy var confirmButton: UIButton = {
-        let button = Button(title: "Вот это технологии!")
+        let button = Button(color: .fullBlack, titleColor: .fullWhite, title: "Вот это технологии!")
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         return button
     }()
