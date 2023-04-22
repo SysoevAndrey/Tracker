@@ -25,7 +25,7 @@ final class TrackerCategoryStore: NSObject {
         self.context = context
         super.init()
         
-        setupCategories(with: context)
+        try setupCategories(with: context)
     }
     
     // MARK: - Methods
@@ -46,12 +46,12 @@ final class TrackerCategoryStore: NSObject {
         return TrackerCategory(id: id,label: label)
     }
     
-    private func setupCategories(with context: NSManagedObjectContext) {
+    private func setupCategories(with context: NSManagedObjectContext) throws {
         let checkRequest = TrackerCategoryCoreData.fetchRequest()
-        let result = try! context.fetch(checkRequest)
+        let result = try context.fetch(checkRequest)
         
         guard result.count == 0 else {
-            categories = try! result.map({ try makeCategory(from: $0) })
+            categories = try result.map({ try makeCategory(from: $0) })
             return
         }
         
@@ -66,7 +66,7 @@ final class TrackerCategoryStore: NSObject {
             return categoryCoreData
         }
         
-        try! context.save()
+        try context.save()
     }
 }
 
