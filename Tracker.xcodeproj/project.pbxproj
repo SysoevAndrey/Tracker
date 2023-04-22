@@ -17,6 +17,10 @@
 		5531771429D2D93800DEFCFF /* SelectionTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531771329D2D93800DEFCFF /* SelectionTitle.swift */; };
 		5531771629D2E54200DEFCFF /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531771529D2E54200DEFCFF /* ColorCell.swift */; };
 		555FC09729DADA6100E6C0D9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555FC09629DADA6100E6C0D9 /* Constants.swift */; };
+		5583FE2C29F4584D0011D108 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE2B29F4584D0011D108 /* RootViewController.swift */; };
+		5583FE2F29F45A160011D108 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE2E29F45A160011D108 /* OnboardingViewController.swift */; };
+		5583FE3129F45B730011D108 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE3029F45B730011D108 /* OnboardingPageViewController.swift */; };
+		5583FE3329F4669C0011D108 /* UserDefaultsBacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE3229F4669C0011D108 /* UserDefaultsBacked.swift */; };
 		558D5C8F29E3083200C60519 /* SelectionCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 558D5C8E29E3083200C60519 /* SelectionCellProtocol.swift */; };
 		559D0AC129E5280800B2B82E /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 559D0ABF29E5280800B2B82E /* Model.xcdatamodeld */; };
 		559FCC0A29D5A228009CEA46 /* TrackerFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559FCC0929D5A228009CEA46 /* TrackerFormViewController.swift */; };
@@ -54,6 +58,10 @@
 		5531771329D2D93800DEFCFF /* SelectionTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionTitle.swift; sourceTree = "<group>"; };
 		5531771529D2E54200DEFCFF /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		555FC09629DADA6100E6C0D9 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		5583FE2B29F4584D0011D108 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		5583FE2E29F45A160011D108 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		5583FE3029F45B730011D108 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		5583FE3229F4669C0011D108 /* UserDefaultsBacked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsBacked.swift; sourceTree = "<group>"; };
 		558D5C8E29E3083200C60519 /* SelectionCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCellProtocol.swift; sourceTree = "<group>"; };
 		559D0AC029E5280800B2B82E /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		559FCC0929D5A228009CEA46 /* TrackerFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerFormViewController.swift; sourceTree = "<group>"; };
@@ -120,10 +128,29 @@
 			path = Statistics;
 			sourceTree = "<group>";
 		};
+		5583FE2A29F4583C0011D108 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				5583FE2B29F4584D0011D108 /* RootViewController.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		5583FE2D29F45A0A0011D108 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				5583FE2E29F45A160011D108 /* OnboardingViewController.swift */,
+				5583FE3029F45B730011D108 /* OnboardingPageViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		558D5C8D29E2E9FC00C60519 /* UI */ = {
 			isa = PBXGroup;
 			children = (
 				553176FA29D1A15D00DEFCFF /* Components */,
+				5583FE2A29F4583C0011D108 /* Root */,
+				5583FE2D29F45A0A0011D108 /* Onboarding */,
 				55B06F9929CDB62D00A7F900 /* TabBar */,
 				55A6B16A29CE1CE5005449F4 /* Trackers */,
 				553176FE29D1B27100DEFCFF /* Statistics */,
@@ -176,6 +203,7 @@
 				55B06F9729CDB20000A7F900 /* UIColor+Extenstions.swift */,
 				55F530AD29D095DE002D0826 /* Int+Extensions.swift */,
 				5531770729D1E9F100DEFCFF /* UICollectionView+Extensions.swift */,
+				5583FE3229F4669C0011D108 /* UserDefaultsBacked.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -330,6 +358,7 @@
 				55F6512429CF14E700C3E4F2 /* TrackerCategory.swift in Sources */,
 				5531770829D1E9F100DEFCFF /* UICollectionView+Extensions.swift in Sources */,
 				55B06F9829CDB20000A7F900 /* UIColor+Extenstions.swift in Sources */,
+				5583FE2F29F45A160011D108 /* OnboardingViewController.swift in Sources */,
 				559D0AC129E5280800B2B82E /* Model.xcdatamodeld in Sources */,
 				55FED95A29E5B2D2006CE32B /* TrackerStore.swift in Sources */,
 				55CCE51029D7040E001B23E6 /* ScheduleViewController.swift in Sources */,
@@ -338,9 +367,11 @@
 				5531771229D2D04500DEFCFF /* EmojiCell.swift in Sources */,
 				555FC09729DADA6100E6C0D9 /* Constants.swift in Sources */,
 				55FED95C29E5B51C006CE32B /* UIColorMarshalling.swift in Sources */,
+				5583FE3129F45B730011D108 /* OnboardingPageViewController.swift in Sources */,
 				55D1CB0829E6F6E2001EE8F4 /* TrackerRecordStore.swift in Sources */,
 				55BC269B29CCB28A006333B4 /* TrackersViewController.swift in Sources */,
 				55F530AE29D095DE002D0826 /* Int+Extensions.swift in Sources */,
+				5583FE2C29F4584D0011D108 /* RootViewController.swift in Sources */,
 				559FCC0A29D5A228009CEA46 /* TrackerFormViewController.swift in Sources */,
 				55F530AC29D0851E002D0826 /* Date+Extensions.swift in Sources */,
 				55BC269729CCB28A006333B4 /* AppDelegate.swift in Sources */,
@@ -352,6 +383,7 @@
 				5531770E29D2BB6900DEFCFF /* ListCell.swift in Sources */,
 				5531771629D2E54200DEFCFF /* ColorCell.swift in Sources */,
 				5531771029D2BC5D00DEFCFF /* ListItem.swift in Sources */,
+				5583FE3329F4669C0011D108 /* UserDefaultsBacked.swift in Sources */,
 				55FED95E29E5B888006CE32B /* TrackerCategoryStore.swift in Sources */,
 				558D5C8F29E3083200C60519 /* SelectionCellProtocol.swift in Sources */,
 				55B06F9D29CDB76D00A7F900 /* StatisticsViewController.swift in Sources */,
