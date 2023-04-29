@@ -113,6 +113,8 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hideKeyboardWhenTappedAround()
+        
         setupContent()
         setupConstraints()
         
@@ -358,6 +360,7 @@ extension TrackersViewController: AddTrackerViewControllerDelegate {
         let trackerFormViewController = TrackerFormViewController(type: type)
         trackerFormViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: trackerFormViewController)
+        navigationController.isModalInPresentation = true
         present(navigationController, animated: true)
     }
 }
@@ -371,6 +374,7 @@ extension TrackersViewController: TrackerFormViewControllerDelegate {
     }
     
     func didTapCancelButton() {
+        collectionView.reloadData()
         dismiss(animated: true)
     }
 }

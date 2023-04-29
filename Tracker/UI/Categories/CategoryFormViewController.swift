@@ -61,6 +61,8 @@ final class CategoryFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hideKeyboardWhenTappedAround()
+        
         setupContent()
         setupConstraints()
     }

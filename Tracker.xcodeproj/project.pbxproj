@@ -10,6 +10,7 @@
 		552FCD8029FD29B200733ECC /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552FCD7F29FD29B200733ECC /* CategoryCell.swift */; };
 		552FCD8229FD381900733ECC /* CategoryFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552FCD8129FD381900733ECC /* CategoryFormViewController.swift */; };
 		552FCD8429FD4E8E00733ECC /* NotFoundStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552FCD8329FD4E8E00733ECC /* NotFoundStack.swift */; };
+		552FCD8629FDAE3900733ECC /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552FCD8529FDAE3900733ECC /* UIViewController+Extensions.swift */; };
 		553176F929D19D9B00DEFCFF /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553176F829D19D9B00DEFCFF /* AddTrackerViewController.swift */; };
 		553176FC29D1A16900DEFCFF /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 553176FB29D1A16900DEFCFF /* Button.swift */; };
 		5531770829D1E9F100DEFCFF /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5531770729D1E9F100DEFCFF /* UICollectionView+Extensions.swift */; };
@@ -56,6 +57,7 @@
 		552FCD7F29FD29B200733ECC /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		552FCD8129FD381900733ECC /* CategoryFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFormViewController.swift; sourceTree = "<group>"; };
 		552FCD8329FD4E8E00733ECC /* NotFoundStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundStack.swift; sourceTree = "<group>"; };
+		552FCD8529FDAE3900733ECC /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		553176F829D19D9B00DEFCFF /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		553176FB29D1A16900DEFCFF /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		5531770729D1E9F100DEFCFF /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				55F530AD29D095DE002D0826 /* Int+Extensions.swift */,
 				5531770729D1E9F100DEFCFF /* UICollectionView+Extensions.swift */,
 				5583FE3229F4669C0011D108 /* UserDefaultsBacked.swift */,
+				552FCD8529FDAE3900733ECC /* UIViewController+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				55A6B16C29CE1D17005449F4 /* TrackerCell.swift in Sources */,
 				55F6512829CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift in Sources */,
 				5531771229D2D04500DEFCFF /* EmojiCell.swift in Sources */,
+				552FCD8629FDAE3900733ECC /* UIViewController+Extensions.swift in Sources */,
 				555FC09729DADA6100E6C0D9 /* Constants.swift in Sources */,
 				55FED95C29E5B51C006CE32B /* UIColorMarshalling.swift in Sources */,
 				5583FE3129F45B730011D108 /* OnboardingPageViewController.swift in Sources */,

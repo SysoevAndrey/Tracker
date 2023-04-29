@@ -182,6 +182,8 @@ final class TrackerFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        hideKeyboardWhenTappedAround()
+        
         setupContent()
         setupConstraints()
         
