@@ -24,9 +24,10 @@ final class CategoriesViewController: UIViewController {
         table.allowsMultipleSelection = false
         return table
     }()
-    private lazy var button: UIButton = {
+    private let notFoundStack = NotFoundStack(label: "Привычки и события можно объединить по смыслу")
+    private lazy var addButton: UIButton = {
         let button = Button(title: "Добавить категорию")
-        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
         return button
     }()
     
@@ -59,8 +60,37 @@ final class CategoriesViewController: UIViewController {
     // MARK: - Actions
     
     @objc
-    private func didTapButton() {
-        viewModel.didTapButton()
+    private func didTapAddButton() {
+        let addCategoryViewController = CategoryFormViewController()
+        addCategoryViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: addCategoryViewController)
+        present(navigationController, animated: true)
+    }
+    
+    // MARK: - Private
+    
+    private func editCategory(_ category: TrackerCategory) {
+        let addCategoryViewController = CategoryFormViewController(data: category.data)
+        addCategoryViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: addCategoryViewController)
+        present(navigationController, animated: true)
+    }
+    
+    private func deleteCategory(_ category: TrackerCategory) {
+        let alert = UIAlertController(
+            title: nil,
+            message: "Эта категория точно не нужна?",
+            preferredStyle: .actionSheet
+        )
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            self?.viewModel.deleteCategory(category)
+        }
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
 }
 
@@ -71,7 +101,8 @@ private extension CategoriesViewController {
         title = "Категория"
         view.backgroundColor = .white
         view.addSubview(categoriesTableView)
-        view.addSubview(button)
+        view.addSubview(addButton)
+        view.addSubview(notFoundStack)
         
         categoriesTableView.dataSource = self
         categoriesTableView.delegate = self
@@ -83,12 +114,16 @@ private extension CategoriesViewController {
             categoriesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            categoriesTableView.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -16),
-            // button
-            button.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            button.heightAnchor.constraint(equalToConstant: 60),
+            categoriesTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -16),
+            // addButton
+            addButton.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
+            addButton.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
+            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            addButton.heightAnchor.constraint(equalToConstant: 60),
+            // notFoundStack
+            notFoundStack.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            notFoundStack.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            notFoundStack.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
         ])
     }
 }
@@ -109,7 +144,7 @@ extension CategoriesViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            position = .first
+            position = viewModel.categories.count == 1 ? .alone : .first
         case viewModel.categories.count - 1:
             position = .last
         default:
@@ -138,17 +173,40 @@ extension CategoriesViewController: UITableViewDelegate {
 extension CategoriesViewController: CategoriesViewModelDelegate {
     func didUpdateCategories() {
         if viewModel.categories.isEmpty {
-            button.setTitle("Добавить категорию", for: .normal)
+            notFoundStack.isHidden = false
         } else {
-            button.setTitle("Готово", for: .normal)
+            notFoundStack.isHidden = true
         }
-    }
-    
-    func didSelectCategory() {
         categoriesTableView.reloadData()
     }
     
-    func didConfirm(_ category: TrackerCategory) {
+    func didSelectCategory(_ category: TrackerCategory) {
         delegate?.didConfirm(category)
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        let category = viewModel.categories[indexPath.row]
+        
+        return UIContextMenuConfiguration(actionProvider:  { _ in
+            UIMenu(children: [
+                UIAction(title: "Редактировать") { [weak self] _ in
+                    self?.editCategory(category)
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                    self?.deleteCategory(category)
+                }
+            ])
+        })
+    }
+}
+
+extension CategoriesViewController: CategoryFormViewControllerDelegate {
+    func didConfirm(_ data: TrackerCategory.Data) {
+        viewModel.handleCategoryFormConfirm(data: data)
+        dismiss(animated: true)
     }
 }
