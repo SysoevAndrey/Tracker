@@ -35,11 +35,11 @@ final class OnboardingViewController: UIPageViewController {
     private let pages: [UIViewController] = [
         OnboardingPageViewController(
             text: "Отслеживайте только то, что хотите",
-            backgroundImage: UIImage(named: "OnboardingBlue")!
+            backgroundImage: .onboardingBlue
         ),
         OnboardingPageViewController(
             text: "Даже если это не литры воды и йога",
-            backgroundImage: UIImage(named: "OnboardingRed")!
+            backgroundImage: .onboardingRed
         )
     ]
     

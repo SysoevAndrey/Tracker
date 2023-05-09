@@ -20,9 +20,10 @@ final class CategoriesViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         table.separatorStyle = .none
-        table.isScrollEnabled = false
         table.allowsMultipleSelection = false
+        table.alwaysBounceVertical = false
         table.backgroundColor = .clear
+        table.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 16, right: 0)
         return table
     }()
     private let notFoundStack = NotFoundStack(label: "Привычки и события можно объединить по смыслу")
@@ -113,12 +114,12 @@ private extension CategoriesViewController {
         NSLayoutConstraint.activate([
             // categoriesTableView
             categoriesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            categoriesTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -16),
+            categoriesTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor),
             // addButton
             addButton.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
-            addButton.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
+            addButton.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor, constant: -16),
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addButton.heightAnchor.constraint(equalToConstant: 60),
             // notFoundStack
