@@ -19,12 +19,12 @@ final class TabBarController: UITabBarController {
         let statisticsViewController = StatisticsViewController()
         
         trackersViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: L10n.Tabbar.trackers,
             image: UIImage(systemName: "record.circle.fill"),
             selectedImage: nil
         )
         statisticsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: L10n.Tabbar.statistics,
             image: UIImage(systemName: "hare.fill"),
             selectedImage: nil
         )
