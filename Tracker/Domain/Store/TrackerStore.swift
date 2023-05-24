@@ -89,7 +89,10 @@ final class TrackerStore: NSObject {
             #keyPath(TrackerCoreData.trackerId), id.uuidString
         )
         try fetchedResultsController.performFetch()
-        return fetchedResultsController.fetchedObjects?.first
+        guard let tracker = fetchedResultsController.fetchedObjects?.first else { throw StoreError.fetchTrackerError }
+        fetchedResultsController.fetchRequest.predicate = nil
+        try fetchedResultsController.performFetch()
+        return tracker
     }
     
     func loadFilteredTrackers(date: Date, searchString: String) throws {
@@ -127,11 +130,17 @@ final class TrackerStore: NSObject {
         
         delegate?.didUpdate()
     }
+    
+    func deleteTracker(_ tracker: Tracker) throws {
+        guard let trackerToDelete = try getTrackerCoreData(by: tracker.id) else { throw StoreError.deleteError }
+        context.delete(trackerToDelete)
+        try context.save()
+    }
 }
 
 extension TrackerStore {
     enum StoreError: Error {
-        case decodeError
+        case decodeError, fetchTrackerError, deleteError
     }
 }
 

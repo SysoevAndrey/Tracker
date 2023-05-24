@@ -241,6 +241,32 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
+extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let tracker = trackerStore.tracker(at: indexPaths[0]) else { return nil }
+        
+        return UIContextMenuConfiguration(actionProvider:  { actions in
+            UIMenu(children: [
+                UIAction(title: "Закрепить") { _ in
+                    
+                },
+                UIAction(title: "Редактировать") { _ in
+                    // TODO: handle edit action
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                    try? self?.trackerStore.deleteTracker(tracker)
+                }
+            ])
+        })
+    }
+}
+
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension TrackersViewController: UICollectionViewDelegateFlowLayout {

@@ -15,7 +15,14 @@ struct Tracker: Identifiable {
     let completedDaysCount: Int
     let schedule: [Weekday]?
     
-    init(id: UUID = UUID(), label: String, emoji: String, color: UIColor, completedDaysCount: Int, schedule: [Weekday]?) {
+    init(
+        id: UUID = UUID(),
+        label: String,
+        emoji: String,
+        color: UIColor,
+        completedDaysCount: Int,
+        schedule: [Weekday]?
+    ) {
         self.id = id
         self.label = label
         self.emoji = emoji
