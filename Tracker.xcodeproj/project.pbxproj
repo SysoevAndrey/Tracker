@@ -28,6 +28,7 @@
 		557522462A0A8DEF007EB400 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 557522482A0A8DEF007EB400 /* Localizable.strings */; };
 		5575D34A29FAB1D2000E8ADE /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575D34929FAB1D2000E8ADE /* CategoriesViewController.swift */; };
 		5575D34C29FAB54E000E8ADE /* CategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5575D34B29FAB54E000E8ADE /* CategoriesViewModel.swift */; };
+		557F89EC2A1EA7E40015D13E /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 557F89EB2A1EA7E40015D13E /* AnalyticsService.swift */; };
 		5583FE2C29F4584D0011D108 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE2B29F4584D0011D108 /* RootViewController.swift */; };
 		5583FE2F29F45A160011D108 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE2E29F45A160011D108 /* OnboardingViewController.swift */; };
 		5583FE3129F45B730011D108 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5583FE3029F45B730011D108 /* OnboardingPageViewController.swift */; };
@@ -82,6 +83,7 @@
 		557522492A0A8DFB007EB400 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5575D34929FAB1D2000E8ADE /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 		5575D34B29FAB54E000E8ADE /* CategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModel.swift; sourceTree = "<group>"; };
+		557F89EB2A1EA7E40015D13E /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		5583FE2B29F4584D0011D108 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		5583FE2E29F45A160011D108 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		5583FE3029F45B730011D108 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,14 @@
 				552FCD8129FD381900733ECC /* CategoryFormViewController.swift */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		557F89EA2A1EA7DA0015D13E /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				557F89EB2A1EA7E40015D13E /* AnalyticsService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5583FE2A29F4583C0011D108 /* Root */ = {
@@ -303,6 +313,7 @@
 				55BC269629CCB28A006333B4 /* AppDelegate.swift */,
 				55BC269829CCB28A006333B4 /* SceneDelegate.swift */,
 				558D5C8D29E2E9FC00C60519 /* UI */,
+				557F89EA2A1EA7DA0015D13E /* Services */,
 				55FED95729E5B2A3006CE32B /* Domain */,
 				55B06F9629CDB1F100A7F900 /* Helpers */,
 				55B06F9529CDAEC800A7F900 /* Resources */,
@@ -370,6 +381,7 @@
 				55BC268F29CCB28A006333B4 /* Sources */,
 				55BC269029CCB28A006333B4 /* Frameworks */,
 				55BC269129CCB28A006333B4 /* Resources */,
+				9EC2AA7B980E00DAB5CF7B12 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -469,6 +481,23 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
 		};
+		9EC2AA7B980E00DAB5CF7B12 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tracker/Pods-Tracker-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Tracker/Pods-Tracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Tracker/Pods-Tracker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -487,6 +516,7 @@
 				55F6512829CF6D5E00C3E4F2 /* TrackerCategoryLabel.swift in Sources */,
 				5531771229D2D04500DEFCFF /* EmojiCell.swift in Sources */,
 				552A63AA2A0ACBB4002911E2 /* Strings+Generated.swift in Sources */,
+				557F89EC2A1EA7E40015D13E /* AnalyticsService.swift in Sources */,
 				552FCD8629FDAE3900733ECC /* UIViewController+Extensions.swift in Sources */,
 				555FC09729DADA6100E6C0D9 /* Constants.swift in Sources */,
 				55FED95C29E5B51C006CE32B /* UIColorMarshalling.swift in Sources */,

@@ -69,6 +69,7 @@ final class TrackerCell: UICollectionViewCell {
     
     static let identifier = "TrackerCell"
     weak var delegate: TrackerCellDelegate?
+    private let analyticsService = AnalyticsService()
     private var tracker: Tracker?
     private var days = 0 {
         willSet {
@@ -131,6 +132,10 @@ final class TrackerCell: UICollectionViewCell {
     
     @objc
     private func didTapCompleteButton() {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "track"
+        ])
         guard let tracker else { return }
         delegate?.didTapCompleteButton(of: self, with: tracker)
     }

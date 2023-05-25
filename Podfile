@@ -7,5 +7,6 @@ target 'Tracker' do
 
   # Pods for Tracker
   pod 'SwiftGen', '~> 6.0'
+  pod 'YandexMobileMetrica/Dynamic', '4.5.0'
 
 end

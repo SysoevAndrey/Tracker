@@ -82,11 +82,13 @@ final class TrackersViewController: UIViewController {
         button.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
         button.layer.cornerRadius = 16
         button.backgroundColor = .blue
+        button.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Properties
     
+    private let analyticsService = AnalyticsService()
     private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
@@ -127,10 +129,25 @@ final class TrackersViewController: UIViewController {
         checkNumberOfTrackers()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.report(event: "open", params: ["screen": "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: "close", params: ["screen": "Main"])
+    }
+    
     // MARK: - Actions
     
     @objc
     private func didTapPlusButton() {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "add_track"
+        ])
+        
         let addTrackerViewController = AddTrackerViewController()
         addTrackerViewController.delegate = self
         let navigationController = UINavigationController(rootViewController: addTrackerViewController)
@@ -148,7 +165,15 @@ final class TrackersViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    // MARK: - Methods
+    @objc
+    private func didTapFilterButton() {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "filter"
+        ])
+    }
+    
+    // MARK: - Private methods
     
     private func checkNumberOfTrackers() {
         if trackerStore.numberOfTrackers == 0 {
@@ -158,6 +183,21 @@ final class TrackersViewController: UIViewController {
             notFoundStack.isHidden = true
             filterButton.isHidden = false
         }
+    }
+    
+    private func onEdit(_ tracker: Tracker) {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "edit"
+        ])
+    }
+    
+    private func onDelete(_ tracker: Tracker) {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "delete"
+        ])
+        try? trackerStore.deleteTracker(tracker)
     }
 }
 
@@ -260,7 +300,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                     // TODO: handle edit action
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                    try? self?.trackerStore.deleteTracker(tracker)
+                    self?.onDelete(tracker)
                 }
             ])
         })
