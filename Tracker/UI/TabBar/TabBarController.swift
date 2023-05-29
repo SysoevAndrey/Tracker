@@ -17,6 +17,8 @@ final class TabBarController: UITabBarController {
         
         let trackersViewController = TrackersViewController()
         let statisticsViewController = StatisticsViewController()
+        let statisticsViewModel = StatisticsViewModel()
+        statisticsViewController.statisticsViewModel = statisticsViewModel
         
         trackersViewController.tabBarItem = UITabBarItem(
             title: L10n.Tabbar.trackers,

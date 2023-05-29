@@ -72,7 +72,10 @@ final class TrackersViewController: UIViewController {
         return view
     }()
     
-    private let notFoundStack = NotFoundStack(label: "Что будем отслеживать?")
+    private let notFoundStack = NotFoundStack(
+        label: "Что будем отслеживать?",
+        image: UIImage(named: "Star")
+    )
     
     private lazy var filterButton: UIButton = {
         let button = UIButton(type: .custom)

@@ -26,7 +26,10 @@ final class CategoriesViewController: UIViewController {
         table.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 16, right: 0)
         return table
     }()
-    private let notFoundStack = NotFoundStack(label: "Привычки и события можно объединить по смыслу")
+    private let notFoundStack = NotFoundStack(
+        label: "Привычки и события можно объединить по смыслу",
+        image: UIImage(named: "Star")
+    )
     private lazy var addButton: UIButton = {
         let button = Button(title: "Добавить категорию")
         button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
@@ -161,29 +164,13 @@ extension CategoriesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension CategoriesViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         ListItem.height
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectCategory(at: indexPath)
-    }
-}
-
-// MARK: - CategoriesViewModelDelegate
-
-extension CategoriesViewController: CategoriesViewModelDelegate {
-    func didUpdateCategories() {
-        if viewModel.categories.isEmpty {
-            notFoundStack.isHidden = false
-        } else {
-            notFoundStack.isHidden = true
-        }
-        categoriesTableView.reloadData()
-    }
-    
-    func didSelectCategory(_ category: TrackerCategory) {
-        delegate?.didConfirm(category)
     }
     
     func tableView(
@@ -204,6 +191,26 @@ extension CategoriesViewController: CategoriesViewModelDelegate {
             ])
         })
     }
+    
+}
+
+// MARK: - CategoriesViewModelDelegate
+
+extension CategoriesViewController: CategoriesViewModelDelegate {
+    
+    func didUpdateCategories() {
+        if viewModel.categories.isEmpty {
+            notFoundStack.isHidden = false
+        } else {
+            notFoundStack.isHidden = true
+        }
+        categoriesTableView.reloadData()
+    }
+    
+    func didSelectCategory(_ category: TrackerCategory) {
+        delegate?.didConfirm(category)
+    }
+
 }
 
 extension CategoriesViewController: CategoryFormViewControllerDelegate {
