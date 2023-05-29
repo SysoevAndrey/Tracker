@@ -102,12 +102,6 @@ final class TrackerFormViewController: UIViewController {
             checkFormValidation()
         }
     }
-    
-    private lazy var category: TrackerCategory? = nil {
-        didSet {
-            checkFormValidation()
-        }
-    }
 
     private var scheduleString: String? {
         guard let schedule = data.schedule else { return nil }
@@ -210,14 +204,20 @@ final class TrackerFormViewController: UIViewController {
     
     @objc
     private func didTapConfirmButton() {
-        guard let category, let emoji = data.emoji, let color = data.color else { return }
+        guard
+            let emoji = data.emoji,
+            let color = data.color,
+            let category = data.category
+        else { return }
         
         let newTracker = Tracker(
             label: data.label,
             emoji: emoji,
             color: color,
+            category: category,
             completedDaysCount: 0,
-            schedule: data.schedule
+            schedule: data.schedule,
+            isPinned: false
         )
         
         delegate?.didTapConfirmButton(category: category, trackerToAdd: newTracker)
@@ -236,7 +236,7 @@ final class TrackerFormViewController: UIViewController {
             return
         }
         
-        if category == nil || data.emoji == nil || data.color == nil {
+        if data.category == nil || data.emoji == nil || data.color == nil {
             isConfirmButtonEnabled = false
             return
         }
@@ -365,10 +365,10 @@ extension TrackerFormViewController: UITableViewDataSource {
 
         if data.schedule == nil {
             position = .alone
-            value = category?.label
+            value = data.category?.label
         } else {
             position = indexPath.row == 0 ? .first : .last
-            value = indexPath.row == 0 ? category?.label : scheduleString
+            value = indexPath.row == 0 ? data.category?.label : scheduleString
         }
 
         listCell.configure(label: parameters[indexPath.row], value: value, position: position)
@@ -382,7 +382,7 @@ extension TrackerFormViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let categoriesViewController = CategoriesViewController(selectedCategory: category)
+            let categoriesViewController = CategoriesViewController(selectedCategory: data.category)
             categoriesViewController.delegate = self
             let navigationController = UINavigationController(rootViewController: categoriesViewController)
             navigationController.isModalInPresentation = true
@@ -407,7 +407,7 @@ extension TrackerFormViewController: UITableViewDelegate {
 
 extension TrackerFormViewController: CategoriesViewControllerDelegate {
     func didConfirm(_ category: TrackerCategory) {
-        self.category = category
+        data.category = category
         parametersTableView.reloadData()
         dismiss(animated: true)
     }

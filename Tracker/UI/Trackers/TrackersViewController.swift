@@ -202,6 +202,10 @@ final class TrackersViewController: UIViewController {
         ])
         try? trackerStore.deleteTracker(tracker)
     }
+    
+    private func onTogglePin(_ tracker: Tracker) {
+        try? trackerStore.togglePin(for: tracker)
+    }
 }
 
 // MARK: - Layout methods
@@ -292,12 +296,15 @@ extension TrackersViewController: UICollectionViewDelegate {
         contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        guard let tracker = trackerStore.tracker(at: indexPaths[0]) else { return nil }
+        guard
+            let indexPath = indexPaths[safe: 0],
+            let tracker = trackerStore.tracker(at: indexPath)
+        else { return nil }
         
         return UIContextMenuConfiguration(actionProvider:  { actions in
             UIMenu(children: [
-                UIAction(title: "Закрепить") { _ in
-                    
+                UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
+                    self?.onTogglePin(tracker)
                 },
                 UIAction(title: "Редактировать") { _ in
                     // TODO: handle edit action
