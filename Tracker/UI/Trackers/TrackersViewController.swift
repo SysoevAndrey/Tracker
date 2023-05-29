@@ -92,7 +92,6 @@ final class TrackersViewController: UIViewController {
     // MARK: - Properties
     
     private let analyticsService = AnalyticsService()
-    private let trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
     private let params = UICollectionView.GeometricParams(
@@ -104,6 +103,7 @@ final class TrackersViewController: UIViewController {
         height: 148,
         cellSpacing: 10
     )
+    private var trackerStore: TrackerStoreProtocol
     private var categories = [TrackerCategory]()
     private var searchText = "" {
         didSet {
@@ -114,6 +114,15 @@ final class TrackersViewController: UIViewController {
     private var completedTrackers: Set<TrackerRecord> = []
     
     // MARK: - Lifecycle
+    
+    init(trackerStore: TrackerStoreProtocol) {
+        self.trackerStore = trackerStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -377,7 +386,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
             viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
             at: indexPath
         )
-
+        
         return headerView.systemLayoutSizeFitting(
             CGSize(
                 width: collectionView.frame.width,

@@ -15,10 +15,14 @@ protocol TrackerStoreDelegate: AnyObject {
 protocol TrackerStoreProtocol {
     var numberOfTrackers: Int { get }
     var numberOfSections: Int { get }
+    var delegate: TrackerStoreDelegate? { get set}
+    
+    func loadFilteredTrackers(date: Date, searchString: String) throws
     func numberOfRowsInSection(_ section: Int) -> Int
     func headerLabelInSection(_ section: Int) -> String?
     func tracker(at indexPath: IndexPath) -> Tracker?
     func addTracker(_ tracker: Tracker, with category: TrackerCategory) throws
+    func deleteTracker(_ tracker: Tracker) throws
     func togglePin(for tracker: Tracker) throws
 }
 
@@ -99,6 +103,56 @@ final class TrackerStore: NSObject {
         try fetchedResultsController.performFetch()
         return tracker
     }
+}
+
+extension TrackerStore {
+    enum StoreError: Error {
+        case decodeError, fetchTrackerError, deleteError, pinError
+    }
+}
+
+// MARK: - TrackerStoreProtocol
+
+extension TrackerStore: TrackerStoreProtocol {
+    
+    var numberOfTrackers: Int {
+        fetchedResultsController.fetchedObjects?.count ?? 0
+    }
+    
+    var numberOfSections: Int {
+        sections.count
+    }
+    
+    private var pinnedTrackers: [Tracker] {
+        guard let fetchedObjects = fetchedResultsController.fetchedObjects else { return [] }
+        let trackers = fetchedObjects.compactMap { try? makeTracker(from: $0) }
+        return trackers.filter({ $0.isPinned })
+    }
+    
+    private var sections: [[Tracker]] {
+        guard let sectionsCoreData = fetchedResultsController.sections else { return [] }
+        var sections: [[Tracker]] = []
+        
+        if !pinnedTrackers.isEmpty {
+            sections.append(pinnedTrackers)
+        }
+        
+        sectionsCoreData.forEach { section in
+            var sectionToAdd = [Tracker]()
+            section.objects?.forEach({ object in
+                guard
+                    let trackerCoreData = object as? TrackerCoreData,
+                    let tracker = try? makeTracker(from: trackerCoreData),
+                    !pinnedTrackers.contains(where: { $0.id == tracker.id })
+                else { return }
+                sectionToAdd.append(tracker)
+            })
+            if !sectionToAdd.isEmpty {
+                sections.append(sectionToAdd)
+            }
+        }
+        return sections
+    }
     
     func loadFilteredTrackers(date: Date, searchString: String) throws {
         var predicates = [NSPredicate]()
@@ -136,62 +190,6 @@ final class TrackerStore: NSObject {
         delegate?.didUpdate()
     }
     
-    func deleteTracker(_ tracker: Tracker) throws {
-        guard let trackerToDelete = try getTrackerCoreData(by: tracker.id) else { throw StoreError.deleteError }
-        context.delete(trackerToDelete)
-        try context.save()
-    }
-}
-
-extension TrackerStore {
-    enum StoreError: Error {
-        case decodeError, fetchTrackerError, deleteError, pinError
-    }
-}
-
-// MARK: - TrackerStoreProtocol
-
-extension TrackerStore: TrackerStoreProtocol {
-    
-    private var pinnedTrackers: [Tracker] {
-        guard let fetchedObjects = fetchedResultsController.fetchedObjects else { return [] }
-        let trackers = fetchedObjects.compactMap { try? makeTracker(from: $0) }
-        return trackers.filter({ $0.isPinned })
-    }
-    
-    private var sections: [[Tracker]] {
-        guard let sectionsCoreData = fetchedResultsController.sections else { return [] }
-        var sections: [[Tracker]] = []
-        
-        if !pinnedTrackers.isEmpty {
-            sections.append(pinnedTrackers)
-        }
-        
-        sectionsCoreData.forEach { section in
-            var sectionToAdd = [Tracker]()
-            section.objects?.forEach({ object in
-                guard
-                    let trackerCoreData = object as? TrackerCoreData,
-                    let tracker = try? makeTracker(from: trackerCoreData),
-                    !pinnedTrackers.contains(where: { $0.id == tracker.id })
-                else { return }
-                sectionToAdd.append(tracker)
-            })
-            if !sectionToAdd.isEmpty {
-                sections.append(sectionToAdd)
-            }
-        }
-        return sections
-    }
-    
-    var numberOfTrackers: Int {
-        fetchedResultsController.fetchedObjects?.count ?? 0
-    }
-    
-    var numberOfSections: Int {
-        sections.count
-    }
-    
     func numberOfRowsInSection(_ section: Int) -> Int {
         sections[section].count
     }
@@ -220,6 +218,12 @@ extension TrackerStore: TrackerStoreProtocol {
         trackerCoreData.schedule = Weekday.code(tracker.schedule)
         trackerCoreData.category = categoryCoreData
         trackerCoreData.isPinned = tracker.isPinned
+        try context.save()
+    }
+    
+    func deleteTracker(_ tracker: Tracker) throws {
+        guard let trackerToDelete = try getTrackerCoreData(by: tracker.id) else { throw StoreError.deleteError }
+        context.delete(trackerToDelete)
         try context.save()
     }
     
