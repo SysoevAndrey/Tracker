@@ -205,11 +205,25 @@ final class TrackersViewController: UIViewController {
     }
     
     private func onDelete(_ tracker: Tracker) {
-        analyticsService.report(event: "click", params: [
-            "screen": "Main",
-            "item": "delete"
-        ])
-        try? trackerStore.deleteTracker(tracker)
+        let alert = UIAlertController(
+            title: nil,
+            message: "Уверены что хотите удалить трекер?",
+            preferredStyle: .actionSheet
+        )
+        let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
+        let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            guard let self else { return }
+            self.analyticsService.report(event: "click", params: [
+                "screen": "Main",
+                "item": "delete"
+            ])
+            try? self.trackerStore.deleteTracker(tracker)
+        }
+        
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     private func onTogglePin(_ tracker: Tracker) {
@@ -267,6 +281,35 @@ private extension TrackersViewController {
     }
 }
 
+extension TrackersViewController: UIContextMenuInteractionDelegate {
+    
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard
+            let location = interaction.view?.convert(location, to: collectionView),
+            let indexPath = collectionView.indexPathForItem(at: location),
+            let tracker = trackerStore.tracker(at: indexPath)
+        else { return nil }
+        
+        return UIContextMenuConfiguration(actionProvider:  { actions in
+            UIMenu(children: [
+                UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
+                    self?.onTogglePin(tracker)
+                },
+                UIAction(title: "Редактировать") { _ in
+                    // TODO: handle edit action
+                },
+                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                    self?.onDelete(tracker)
+                }
+            ])
+        })
+    }
+    
+}
+
 // MARK: - UICollectionViewDataSource
 
 extension TrackersViewController: UICollectionViewDataSource {
@@ -290,7 +333,13 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
         
         let isCompleted = completedTrackers.contains { $0.date == currentDate && $0.trackerId == tracker.id }
-        trackerCell.configure(with: tracker, days: tracker.completedDaysCount, isCompleted: isCompleted)
+        let interaction = UIContextMenuInteraction(delegate: self)
+        trackerCell.configure(
+            with: tracker,
+            days: tracker.completedDaysCount,
+            isCompleted: isCompleted,
+            interaction: interaction
+        )
         trackerCell.delegate = self
         
         return trackerCell
@@ -300,30 +349,30 @@ extension TrackersViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension TrackersViewController: UICollectionViewDelegate {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
-        point: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        guard
-            let indexPath = indexPaths[safe: 0],
-            let tracker = trackerStore.tracker(at: indexPath)
-        else { return nil }
-        
-        return UIContextMenuConfiguration(actionProvider:  { actions in
-            UIMenu(children: [
-                UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
-                    self?.onTogglePin(tracker)
-                },
-                UIAction(title: "Редактировать") { _ in
-                    // TODO: handle edit action
-                },
-                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
-                    self?.onDelete(tracker)
-                }
-            ])
-        })
-    }
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
+//        point: CGPoint
+//    ) -> UIContextMenuConfiguration? {
+//        guard
+//            let indexPath = indexPaths[safe: 0],
+//            let tracker = trackerStore.tracker(at: indexPath)
+//        else { return nil }
+//        
+//        return UIContextMenuConfiguration(actionProvider:  { actions in
+//            UIMenu(children: [
+//                UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
+//                    self?.onTogglePin(tracker)
+//                },
+//                UIAction(title: "Редактировать") { _ in
+//                    // TODO: handle edit action
+//                },
+//                UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+//                    self?.onDelete(tracker)
+//                }
+//            ])
+//        })
+//    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
