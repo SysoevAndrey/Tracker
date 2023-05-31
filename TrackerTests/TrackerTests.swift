@@ -92,6 +92,8 @@ extension TrackerTests {
         
         func addTracker(_ tracker: Tracker, with category: TrackerCategory) throws {}
         
+        func updateTracker(_ tracker: Tracker, with data: Tracker.Data) throws {}
+        
         func deleteTracker(_ tracker: Tracker) throws {}
         
         func togglePin(for tracker: Tracker) throws {}

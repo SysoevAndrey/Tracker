@@ -112,6 +112,7 @@ final class TrackersViewController: UIViewController {
     }
     private var currentDate = Date.from(date: Date())!
     private var completedTrackers: Set<TrackerRecord> = []
+    private var editingTracker: Tracker?
     
     // MARK: - Lifecycle
     
@@ -197,11 +198,31 @@ final class TrackersViewController: UIViewController {
         }
     }
     
+    private func presentFormController(
+        with data: Tracker.Data? = nil,
+        of trackerType: AddTrackerViewController.TrackerType,
+        formType: TrackerFormViewController.FormType
+    ) {
+        let trackerFormViewController = TrackerFormViewController(
+            formType: formType,
+            trackerType: trackerType,
+            data: data
+        )
+        trackerFormViewController.delegate = self
+        let navigationController = UINavigationController(rootViewController: trackerFormViewController)
+        navigationController.isModalInPresentation = true
+        present(navigationController, animated: true)
+    }
+    
     private func onEdit(_ tracker: Tracker) {
         analyticsService.report(event: "click", params: [
             "screen": "Main",
             "item": "edit"
         ])
+        
+        let type: AddTrackerViewController.TrackerType = tracker.schedule != nil ? .habit : .irregularEvent
+        editingTracker = tracker
+        presentFormController(with: tracker.data, of: type, formType: .edit)
     }
     
     private func onDelete(_ tracker: Tracker) {
@@ -298,8 +319,8 @@ extension TrackersViewController: UIContextMenuInteractionDelegate {
                 UIAction(title: tracker.isPinned ? "Открепить" : "Закрепить") { [weak self] _ in
                     self?.onTogglePin(tracker)
                 },
-                UIAction(title: "Редактировать") { _ in
-                    // TODO: handle edit action
+                UIAction(title: "Редактировать") { [weak self] _ in
+                    self?.onEdit(tracker)
                 },
                 UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                     self?.onDelete(tracker)
@@ -491,24 +512,28 @@ extension TrackersViewController: TrackerCellDelegate {
 extension TrackersViewController: AddTrackerViewControllerDelegate {
     func didSelectTracker(with type: AddTrackerViewController.TrackerType) {
         dismiss(animated: true)
-        let trackerFormViewController = TrackerFormViewController(type: type)
-        trackerFormViewController.delegate = self
-        let navigationController = UINavigationController(rootViewController: trackerFormViewController)
-        navigationController.isModalInPresentation = true
-        present(navigationController, animated: true)
+        presentFormController(of: type, formType: .add)
     }
 }
 
 // MARK: - TrackerFormViewControllerDelegate
 
 extension TrackersViewController: TrackerFormViewControllerDelegate {
-    func didTapConfirmButton(category: TrackerCategory, trackerToAdd: Tracker) {
+    func didAddTracker(category: TrackerCategory, trackerToAdd: Tracker) {
         dismiss(animated: true)
         try? trackerStore.addTracker(trackerToAdd, with: category)
     }
     
+    func didUpdateTracker(with data: Tracker.Data) {
+        guard let editingTracker else { return }
+        dismiss(animated: true)
+        try? trackerStore.updateTracker(editingTracker, with: data)
+        self.editingTracker = nil
+    }
+    
     func didTapCancelButton() {
         collectionView.reloadData()
+        editingTracker = nil
         dismiss(animated: true)
     }
 }

@@ -22,6 +22,7 @@ protocol TrackerStoreProtocol {
     func headerLabelInSection(_ section: Int) -> String?
     func tracker(at indexPath: IndexPath) -> Tracker?
     func addTracker(_ tracker: Tracker, with category: TrackerCategory) throws
+    func updateTracker(_ tracker: Tracker, with data: Tracker.Data) throws
     func deleteTracker(_ tracker: Tracker) throws
     func togglePin(for tracker: Tracker) throws
 }
@@ -33,7 +34,6 @@ final class TrackerStore: NSObject {
     
     private let context: NSManagedObjectContext
     private let trackerCategoryStore = TrackerCategoryStore()
-    private let uiColorMarshalling = UIColorMarshalling()
     
     private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
@@ -77,7 +77,7 @@ final class TrackerStore: NSObject {
             let category = try? trackerCategoryStore.makeCategory(from: categoryCoreData),
             let completedDaysCount = coreData.records
         else { throw StoreError.decodeError }
-        let color = uiColorMarshalling.color(from: colorHEX)
+        let color = UIColorMarshalling.color(from: colorHEX)
         let scheduleString = coreData.schedule
         let schedule = Weekday.decode(from: scheduleString)
         return Tracker(
@@ -214,10 +214,27 @@ extension TrackerStore: TrackerStoreProtocol {
         trackerCoreData.createdAt = Date()
         trackerCoreData.label = tracker.label
         trackerCoreData.emoji = tracker.emoji
-        trackerCoreData.colorHEX = uiColorMarshalling.makeHEX(from: tracker.color)
+        trackerCoreData.colorHEX = UIColorMarshalling.makeHEX(from: tracker.color)
         trackerCoreData.schedule = Weekday.code(tracker.schedule)
         trackerCoreData.category = categoryCoreData
         trackerCoreData.isPinned = tracker.isPinned
+        try context.save()
+    }
+    
+    func updateTracker(_ tracker: Tracker, with data: Tracker.Data) throws {
+        guard
+            let emoji = data.emoji,
+            let color = data.color,
+            let category = data.category
+        else { return }
+        
+        let trackerCoreData = try getTrackerCoreData(by: tracker.id)
+        let categoryCoreData = try trackerCategoryStore.categoryCoreData(with: category.id)
+        trackerCoreData?.label = data.label
+        trackerCoreData?.emoji = emoji
+        trackerCoreData?.colorHEX = UIColorMarshalling.makeHEX(from: color)
+        trackerCoreData?.schedule = Weekday.code(data.schedule)
+        trackerCoreData?.category = categoryCoreData
         try context.save()
     }
     

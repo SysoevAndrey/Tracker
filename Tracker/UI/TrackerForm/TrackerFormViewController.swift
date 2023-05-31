@@ -9,7 +9,8 @@ import UIKit
 
 protocol TrackerFormViewControllerDelegate: AnyObject {
     func didTapCancelButton()
-    func didTapConfirmButton(category: TrackerCategory, trackerToAdd: Tracker)
+    func didAddTracker(category: TrackerCategory, trackerToAdd: Tracker)
+    func didUpdateTracker(with data: Tracker.Data)
 }
 
 final class TrackerFormViewController: UIViewController {
@@ -94,7 +95,8 @@ final class TrackerFormViewController: UIViewController {
     // MARK: - Properties
     
     weak var delegate: TrackerFormViewControllerDelegate?
-    private let type: AddTrackerViewController.TrackerType
+    private let formType: FormType
+    private let trackerType: AddTrackerViewController.TrackerType
     private let trackerCategoryStore = TrackerCategoryStore()
     
     private var data: Tracker.Data {
@@ -155,15 +157,14 @@ final class TrackerFormViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    init(type: AddTrackerViewController.TrackerType, data: Tracker.Data = Tracker.Data()) {
-        self.type = type
-        self.data = data
-        switch type {
-        case .habit:
-            self.data.schedule = []
-        case .irregularEvent:
-            self.data.schedule = nil
-        }
+    init(
+        formType: TrackerFormViewController.FormType,
+        trackerType: AddTrackerViewController.TrackerType,
+        data: Tracker.Data?
+    ) {
+        self.formType = formType
+        self.trackerType = trackerType
+        self.data = data ?? Tracker.Data()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -181,6 +182,7 @@ final class TrackerFormViewController: UIViewController {
         setupContent()
         setupConstraints()
         
+        setFormFields()
         checkFormValidation()
     }
     
@@ -204,26 +206,45 @@ final class TrackerFormViewController: UIViewController {
     
     @objc
     private func didTapConfirmButton() {
-        guard
-            let emoji = data.emoji,
-            let color = data.color,
-            let category = data.category
-        else { return }
-        
-        let newTracker = Tracker(
-            label: data.label,
-            emoji: emoji,
-            color: color,
-            category: category,
-            completedDaysCount: 0,
-            schedule: data.schedule,
-            isPinned: false
-        )
-        
-        delegate?.didTapConfirmButton(category: category, trackerToAdd: newTracker)
+        switch formType {
+        case .add: addTracker()
+        case .edit: editTracker()
+        }
     }
     
-    // MARK: - Methods
+    // MARK: - Private
+    
+    private func setFormFields() {
+        textField.text = data.label
+        switch trackerType {
+        case .habit:
+            self.data.schedule = data.schedule ?? []
+        case .irregularEvent:
+            self.data.schedule = nil
+        }
+        if
+            let emoji = data.emoji,
+            let emojiIndex = emojis.firstIndex(of: emoji)
+        {
+            emojisCollection.selectItem(
+                at: IndexPath(row: emojiIndex, section: 0),
+                animated: true,
+                scrollPosition: .top
+            )
+        }
+        if
+            let dataColor = data.color,
+            let colorIndex = colors.firstIndex(where: { color in
+                UIColorMarshalling.makeHEX(from: color) == UIColorMarshalling.makeHEX(from: dataColor)
+            })
+        {
+            colorsCollection.selectItem(
+                at: IndexPath(row: colorIndex, section: 0),
+                animated: true,
+                scrollPosition: .top
+            )
+        }
+    }
     
     private func checkFormValidation() {
         if data.label.count == 0 {
@@ -248,15 +269,43 @@ final class TrackerFormViewController: UIViewController {
         
         isConfirmButtonEnabled = true
     }
+    
+    private func editTracker() {
+        delegate?.didUpdateTracker(with: data)
+    }
+    
+    private func addTracker() {
+        guard
+            let emoji = data.emoji,
+            let color = data.color,
+            let category = data.category
+        else { return }
+        
+        let newTracker = Tracker(
+            label: data.label,
+            emoji: emoji,
+            color: color,
+            category: category,
+            completedDaysCount: 0,
+            schedule: data.schedule,
+            isPinned: false
+        )
+        
+        delegate?.didAddTracker(category: category, trackerToAdd: newTracker)
+    }
 }
 
 // MARK: - Layout methods
 
 private extension TrackerFormViewController {
     func setupContent() {
-        switch type {
-        case .habit: title = "Новая привычка"
-        case .irregularEvent: title = "Новое нерегулярное событие"
+        switch formType {
+        case .add:
+            switch trackerType {
+            case .habit: title = "Новая привычка"
+            case .irregularEvent: title = "Новое нерегулярное событие"
+            }
+        case .edit: title = "Редактирование привычки"
         }
         
         textField.delegate = self
@@ -338,6 +387,14 @@ private extension TrackerFormViewController {
         ])
     }
 }
+
+extension TrackerFormViewController {
+    enum FormType {
+        case add, edit
+    }
+}
+
+// MARK: - UITextFieldDelegate
 
 extension TrackerFormViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -440,11 +497,20 @@ extension TrackerFormViewController: UICollectionViewDataSource {
             guard let emojiCell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCell.identifier, for: indexPath) as? EmojiCell else { return UICollectionViewCell() }
             let emoji = emojis[indexPath.row]
             emojiCell.configure(with: emoji)
+            if emoji == data.emoji {
+                emojiCell.select()
+            }
             return emojiCell
         case colorsCollection:
             guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCell.identifier, for: indexPath) as? ColorCell else { return UICollectionViewCell() }
             let color = colors[indexPath.row]
             colorCell.configure(with: color)
+            if
+                let dataColor = data.color,
+                UIColorMarshalling.makeHEX(from: color) == UIColorMarshalling.makeHEX(from: dataColor)
+            {
+                colorCell.select()
+            }
             return colorCell
         default:
             return UICollectionViewCell()

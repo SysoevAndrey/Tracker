@@ -273,12 +273,9 @@
 		559FCC0829D5A205009CEA46 /* TrackerForm */ = {
 			isa = PBXGroup;
 			children = (
+				55CE4A402A27C7E100B48DA6 /* Cells */,
 				559FCC0929D5A228009CEA46 /* TrackerFormViewController.swift */,
-				5531771129D2D04500DEFCFF /* EmojiCell.swift */,
-				5531771529D2E54200DEFCFF /* ColorCell.swift */,
 				5531771329D2D93800DEFCFF /* SelectionTitle.swift */,
-				5531770D29D2BB6900DEFCFF /* ListCell.swift */,
-				558D5C8E29E3083200C60519 /* SelectionCellProtocol.swift */,
 			);
 			path = TrackerForm;
 			sourceTree = "<group>";
@@ -367,6 +364,17 @@
 				55CCE51129D7091C001B23E6 /* WeekdayCell.swift */,
 			);
 			path = Schedule;
+			sourceTree = "<group>";
+		};
+		55CE4A402A27C7E100B48DA6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5531771129D2D04500DEFCFF /* EmojiCell.swift */,
+				5531771529D2E54200DEFCFF /* ColorCell.swift */,
+				5531770D29D2BB6900DEFCFF /* ListCell.swift */,
+				558D5C8E29E3083200C60519 /* SelectionCellProtocol.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		55EE87CD2A253A4E0018F7FC /* Extensions */ = {
