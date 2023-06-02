@@ -179,10 +179,11 @@ final class TrackerFormViewController: UIViewController {
         
         hideKeyboardWhenTappedAround()
         
+        setFormFields()
+        
         setupContent()
         setupConstraints()
         
-        setFormFields()
         checkFormValidation()
     }
     
@@ -221,28 +222,6 @@ final class TrackerFormViewController: UIViewController {
             self.data.schedule = data.schedule ?? []
         case .irregularEvent:
             self.data.schedule = nil
-        }
-        if
-            let emoji = data.emoji,
-            let emojiIndex = emojis.firstIndex(of: emoji)
-        {
-            emojisCollection.selectItem(
-                at: IndexPath(row: emojiIndex, section: 0),
-                animated: true,
-                scrollPosition: .top
-            )
-        }
-        if
-            let dataColor = data.color,
-            let colorIndex = colors.firstIndex(where: { color in
-                UIColorMarshalling.makeHEX(from: color) == UIColorMarshalling.makeHEX(from: dataColor)
-            })
-        {
-            colorsCollection.selectItem(
-                at: IndexPath(row: colorIndex, section: 0),
-                animated: true,
-                scrollPosition: .top
-            )
         }
     }
     
@@ -499,6 +478,11 @@ extension TrackerFormViewController: UICollectionViewDataSource {
             emojiCell.configure(with: emoji)
             if emoji == data.emoji {
                 emojiCell.select()
+                emojisCollection.selectItem(
+                    at: indexPath,
+                    animated: false,
+                    scrollPosition: .bottom
+                )
             }
             return emojiCell
         case colorsCollection:
@@ -510,6 +494,11 @@ extension TrackerFormViewController: UICollectionViewDataSource {
                 UIColorMarshalling.makeHEX(from: color) == UIColorMarshalling.makeHEX(from: dataColor)
             {
                 colorCell.select()
+                colorsCollection.selectItem(
+                    at: indexPath,
+                    animated: false,
+                    scrollPosition: .bottom
+                )
             }
             return colorCell
         default:
