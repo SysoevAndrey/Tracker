@@ -246,7 +246,7 @@ extension TrackerStore: TrackerStoreProtocol {
     
     func togglePin(for tracker: Tracker) throws {
         guard let trackerToToggle = try getTrackerCoreData(by: tracker.id) else { throw StoreError.pinError }
-        trackerToToggle.isPinned = !trackerToToggle.isPinned
+        trackerToToggle.isPinned.toggle()
         try context.save()
     }
 }
