@@ -20,12 +20,16 @@ final class CategoriesViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         table.separatorStyle = .none
-        table.isScrollEnabled = false
         table.allowsMultipleSelection = false
+        table.alwaysBounceVertical = false
         table.backgroundColor = .clear
+        table.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 16, right: 0)
         return table
     }()
-    private let notFoundStack = NotFoundStack(label: "Привычки и события можно объединить по смыслу")
+    private let notFoundStack = NotFoundStack(
+        label: "Привычки и события можно объединить по смыслу",
+        image: UIImage(named: "Star")
+    )
     private lazy var addButton: UIButton = {
         let button = Button(title: "Добавить категорию")
         button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
@@ -113,12 +117,12 @@ private extension CategoriesViewController {
         NSLayoutConstraint.activate([
             // categoriesTableView
             categoriesTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            categoriesTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             categoriesTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            categoriesTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -16),
+            categoriesTableView.bottomAnchor.constraint(equalTo: addButton.topAnchor),
             // addButton
             addButton.leadingAnchor.constraint(equalTo: categoriesTableView.leadingAnchor),
-            addButton.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor),
+            addButton.trailingAnchor.constraint(equalTo: categoriesTableView.trailingAnchor, constant: -16),
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             addButton.heightAnchor.constraint(equalToConstant: 60),
             // notFoundStack
@@ -160,29 +164,13 @@ extension CategoriesViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension CategoriesViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         ListItem.height
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectCategory(at: indexPath)
-    }
-}
-
-// MARK: - CategoriesViewModelDelegate
-
-extension CategoriesViewController: CategoriesViewModelDelegate {
-    func didUpdateCategories() {
-        if viewModel.categories.isEmpty {
-            notFoundStack.isHidden = false
-        } else {
-            notFoundStack.isHidden = true
-        }
-        categoriesTableView.reloadData()
-    }
-    
-    func didSelectCategory(_ category: TrackerCategory) {
-        delegate?.didConfirm(category)
     }
     
     func tableView(
@@ -203,6 +191,22 @@ extension CategoriesViewController: CategoriesViewModelDelegate {
             ])
         })
     }
+    
+}
+
+// MARK: - CategoriesViewModelDelegate
+
+extension CategoriesViewController: CategoriesViewModelDelegate {
+    
+    func didUpdateCategories() {
+        notFoundStack.isHidden = !viewModel.categories.isEmpty
+        categoriesTableView.reloadData()
+    }
+    
+    func didSelectCategory(_ category: TrackerCategory) {
+        delegate?.didConfirm(category)
+    }
+
 }
 
 extension CategoriesViewController: CategoryFormViewControllerDelegate {

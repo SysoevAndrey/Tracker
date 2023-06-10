@@ -12,13 +12,19 @@ protocol TrackerCellDelegate: AnyObject {
 }
 
 final class TrackerCell: UICollectionViewCell {
+    
     // MARK: - Layout elements
     
     private let cardView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
-        view.layer.borderColor = UIColor(red: 174 / 255, green: 175 / 255, blue: 180 / 255, alpha: 0.3).cgColor
+        view.layer.borderColor = UIColor(
+            red: 174 / 255,
+            green: 175 / 255,
+            blue: 180 / 255,
+            alpha: 0.3
+        ).cgColor
         view.layer.borderWidth = 1
         return view
     }()
@@ -59,7 +65,7 @@ final class TrackerCell: UICollectionViewCell {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        button.tintColor = .white
         button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(didTapCompleteButton), for: .touchUpInside)
         return button
@@ -69,10 +75,11 @@ final class TrackerCell: UICollectionViewCell {
     
     static let identifier = "TrackerCell"
     weak var delegate: TrackerCellDelegate?
+    private let analyticsService = AnalyticsService()
     private var tracker: Tracker?
     private var days = 0 {
         willSet {
-            daysCountLabel.text = "\(newValue.days())"
+            daysCountLabel.text = L10n.numberOfDays(newValue)
         }
     }
     
@@ -99,10 +106,16 @@ final class TrackerCell: UICollectionViewCell {
     
     // MARK: - Methods
     
-    func configure(with tracker: Tracker, days: Int, isCompleted: Bool) {
+    func configure(
+        with tracker: Tracker,
+        days: Int,
+        isCompleted: Bool,
+        interaction: UIInteraction
+    ) {
         self.tracker = tracker
         self.days = days
         cardView.backgroundColor = tracker.color
+        cardView.addInteraction(interaction)
         emoji.text = tracker.emoji
         trackerLabel.text = tracker.label
         completeButton.backgroundColor = tracker.color
@@ -131,6 +144,10 @@ final class TrackerCell: UICollectionViewCell {
     
     @objc
     private func didTapCompleteButton() {
+        analyticsService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "track"
+        ])
         guard let tracker else { return }
         delegate?.didTapCompleteButton(of: self, with: tracker)
     }
@@ -141,9 +158,9 @@ final class TrackerCell: UICollectionViewCell {
 private extension TrackerCell {
     func setupContent() {
         contentView.addSubview(cardView)
-        contentView.addSubview(iconView)
-        contentView.addSubview(emoji)
-        contentView.addSubview(trackerLabel)
+        cardView.addSubview(iconView)
+        cardView.addSubview(emoji)
+        cardView.addSubview(trackerLabel)
         contentView.addSubview(daysCountLabel)
         contentView.addSubview(completeButton)
     }

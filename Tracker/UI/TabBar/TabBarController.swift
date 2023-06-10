@@ -15,16 +15,19 @@ final class TabBarController: UITabBarController {
         tabBar.backgroundColor = .white
         tabBar.tintColor = .blue
         
-        let trackersViewController = TrackersViewController()
+        let trackerStore = TrackerStore()
+        let trackersViewController = TrackersViewController(trackerStore: trackerStore)
         let statisticsViewController = StatisticsViewController()
+        let statisticsViewModel = StatisticsViewModel()
+        statisticsViewController.statisticsViewModel = statisticsViewModel
         
         trackersViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: L10n.Tabbar.trackers,
             image: UIImage(systemName: "record.circle.fill"),
             selectedImage: nil
         )
         statisticsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: L10n.Tabbar.statistics,
             image: UIImage(systemName: "hare.fill"),
             selectedImage: nil
         )
