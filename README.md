@@ -24,6 +24,11 @@ The Tracker App is designed to help users build and monitor positive habits. Wit
    - Individual progress.
    - Average performance.
 
+<img src="https://github.com/user-attachments/assets/f32405cb-7ccb-4cd4-b41f-36fb3226430e" height="400" />
+<img src="https://github.com/user-attachments/assets/c6e16195-8234-4301-9278-44251fb8c34c" height="400" />
+<img src="https://github.com/user-attachments/assets/8df77da6-02f5-4abc-a6ae-12dc6c4d278b" height="400" />
+<img src="https://github.com/user-attachments/assets/2db0bdbd-ab94-457b-902c-e8073768d868" height="400" />
+
 ## Getting Started
 To install and run the Habit Tracker App, follow these steps:
 1. Clone the repository.
