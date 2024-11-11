@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D0C608F5A54B29EC356B885 /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED7AD5AF5F4A42E06A1B782D /* Pods_Tracker.framework */; };
+		551767CF2CE24D25003ABC6B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 551767CE2CE24D25003ABC6B /* README.md */; };
 		552A63AA2A0ACBB4002911E2 /* Strings+Generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552A63A92A0ACBB4002911E2 /* Strings+Generated.swift */; };
 		552DC6432A23974F00EF0E82 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552DC6422A23974E00EF0E82 /* StatisticsViewModel.swift */; };
 		552DC6452A239CED00EF0E82 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552DC6442A239CED00EF0E82 /* StatisticsView.swift */; };
@@ -78,6 +79,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		551767CE2CE24D25003ABC6B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		552A63A92A0ACBB4002911E2 /* Strings+Generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Strings+Generated.swift"; sourceTree = "<group>"; };
 		552DC6422A23974E00EF0E82 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		552DC6442A239CED00EF0E82 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 		55BC268A29CCB28A006333B4 = {
 			isa = PBXGroup;
 			children = (
+				551767CE2CE24D25003ABC6B /* README.md */,
 				555513392A0A92E9009AD9CE /* swiftgen.yml */,
 				55BC269529CCB28A006333B4 /* Tracker */,
 				557F89F22A1F7F0E0015D13E /* TrackerTests */,
@@ -530,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				551767CF2CE24D25003ABC6B /* README.md in Resources */,
 				55BC26A329CCB28B006333B4 /* LaunchScreen.storyboard in Resources */,
 				557522462A0A8DEF007EB400 /* Localizable.strings in Resources */,
 				55BC26A029CCB28B006333B4 /* Assets.xcassets in Resources */,
